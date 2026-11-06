@@ -51,7 +51,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .stage{width:100%}
 .stage.is-mobile .site{max-width:390px; border-radius:10px; box-shadow:0 1px 3px rgb(0 0 0 / .12), 0 12px 40px rgb(0 0 0 / .10)}
 .site{
-  --bg-main:#F5F5F3; --bg-extra:#161616; --bg-semi:#000; --bg-acc:#4E9F3D; --bg-decor:#74C677;
+  --bg-main:#FDF8E8; --bg-extra:#161616; --bg-semi:#000; --bg-acc:#4E9F3D; --bg-decor:#74C677;
   --t-main:#000; --t-extra:#fff; --t-semi:#fff; --t-acc:#fff; --logo-bg:#fff;
   --f-head:"Open Sans"; --f-body:"Open Sans";
   --semi: color-mix(in srgb, var(--bg-semi) 55%, transparent);
@@ -71,7 +71,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .ico{width:18px; height:18px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
 
 .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:46px; padding:0 22px; border-radius:4px; border:0; cursor:pointer; text-decoration:none; font-weight:600; font-size:15px; white-space:nowrap}
-.btn-acc{background:var(--bg-acc); color:var(--t-acc)}
+.btn-acc,.site a.btn-acc{background:var(--bg-acc); color:var(--t-acc)}
 .btn-acc:hover{filter:brightness(1.08)}
 .btn-ghost{background:transparent; color:inherit; border:1px solid currentColor}
 .link{display:inline-flex; align-items:center; gap:6px; font-weight:600; font-size:15px; text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px}
@@ -157,27 +157,32 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .acts{display:flex; align-items:center; gap:18px; flex-wrap:wrap}
 
 /* about */
-.about{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:56px; align-items:start}
-.about-txt{font-size:17px; margin:0}
-.about-txt.clamp{display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:6; overflow:hidden}
-.adv{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:6px; overflow:hidden}
-.adv>div{background:var(--bg-main); padding:26px 24px; display:grid; gap:8px; align-content:start}
-.adv .ico{width:30px; height:30px; color:var(--bg-decor); stroke-width:1.5}
-.adv h3{font-size:18px; font-weight:700}
-.adv p{margin:0; font-size:15px; color:var(--muted)}
+/* about: only the constructor's description text. Heading left, text in a readable column right. */
+.about{display:grid; grid-template-columns:minmax(0,4fr) minmax(0,7fr); gap:56px; align-items:start; padding-block:56px; border-block:1px solid var(--line)}
+.about-head h2{font-size:clamp(28px,3.4cqi,40px); font-weight:700}
+.about-body{display:grid; gap:16px; justify-items:start; min-width:0}
+.about-txt{font-size:17px; line-height:1.7; max-width:68ch}
+.about-txt p{margin:0}
+.about-txt p+p{margin-top:14px}
+.about-txt.clamp{max-height:calc(1.7em * 7); overflow:hidden; -webkit-mask-image:linear-gradient(#000 60%, transparent); mask-image:linear-gradient(#000 60%, transparent)}
 
 /* map + contacts */
-.mapbox{display:grid; grid-template-columns:minmax(0,380px) minmax(0,1fr); border:1px solid var(--line); border-radius:6px; overflow:hidden; min-height:480px}
-.mlist{list-style:none; margin:0; padding:0; max-height:560px; overflow:auto; border-right:1px solid var(--line)}
+/* map: full-bleed, hotel list floats over it inside the content column */
+.mapfull{position:relative; height:620px; border-block:1px solid var(--line)}
+.mapfull .map{position:absolute; inset:0}
+.map-ov{position:relative; height:100%; display:flex; align-items:center; pointer-events:none}
+.mlist{pointer-events:auto; list-style:none; margin:0; padding:0; width:370px; max-width:100%; max-height:calc(100% - 64px); overflow:auto;
+  background:color-mix(in srgb, var(--bg-main) 86%, transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  border-radius:6px; box-shadow:0 8px 30px rgb(0 0 0 / .14)}
 .mlist li+li{border-top:1px solid var(--line)}
 .mitem{all:unset; box-sizing:border-box; display:grid; grid-template-columns:auto 1fr; gap:4px 14px; width:100%; padding:20px 22px; cursor:pointer}
 .mitem:focus-visible{outline:2px solid var(--bg-acc); outline-offset:-2px}
-.mitem[aria-current="true"]{background:var(--decor-soft)}
+.mitem[aria-current="true"]{background:color-mix(in srgb, var(--bg-decor) 18%, transparent)}
 .num{grid-row:span 4; width:28px; height:28px; border-radius:50%; background:var(--bg-acc); color:var(--t-acc); font-size:13px; font-weight:700; display:grid; place-items:center; font-variant-numeric:tabular-nums}
 .mitem b{font-family:var(--head); font-size:17px}
 .mitem span{font-size:14px; color:var(--muted)}
 .mitem .ph{color:var(--t-main); font-weight:600; font-variant-numeric:tabular-nums}
-.map{position:relative; background:var(--soft); min-height:320px}
+.map{background:var(--soft)}
 .map svg{position:absolute; inset:0; width:100%; height:100%}
 .pin{position:absolute; transform:translate(-50%,-100%); display:flex; flex-direction:column; align-items:center; border:0; background:none; padding:0; cursor:pointer; transition:transform .2s}
 .pin i{font-style:normal; width:30px; height:30px; border-radius:50% 50% 50% 0; transform:rotate(-45deg); background:var(--bg-acc); display:grid; place-items:center; box-shadow:0 3px 8px rgb(0 0 0 / .25)}
@@ -185,7 +190,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .pin em{font-style:normal; margin-top:8px; background:var(--bg-main); color:var(--t-main); font-size:12px; font-weight:600; padding:3px 8px; border-radius:3px; box-shadow:0 1px 4px rgb(0 0 0 / .18); white-space:nowrap; opacity:0; transition:opacity .2s}
 .pin.on{transform:translate(-50%,-100%) scale(1.18); z-index:2}
 .pin.on em{opacity:1}
-.map-note{position:absolute; left:14px; bottom:14px; right:14px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; font-size:12px; color:var(--muted)}
+.map-note{position:absolute; right:16px; bottom:16px; font-size:12px}
 .map-note a{background:var(--bg-main); color:var(--t-main); padding:6px 10px; border-radius:3px; text-decoration:none; font-weight:600; box-shadow:0 1px 4px rgb(0 0 0 / .14)}
 
 /* footer */
@@ -214,9 +219,6 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   .fld:nth-last-child(2){border-bottom:1px solid var(--line)}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .about{grid-template-columns:1fr; gap:32px}
-  .mapbox{grid-template-columns:1fr}
-  .map{order:-1; min-height:340px}
-  .mlist{border-right:0; border-top:1px solid var(--line); max-height:none}
   .foot-grid{grid-template-columns:1fr 1fr}
   .mnav.open{display:grid; position:absolute; top:76px; left:0; right:0; background:var(--bg-main); color:var(--t-main); box-shadow:0 10px 30px rgb(0 0 0 / .15); padding:8px 28px 18px}
   .mnav a{padding:14px 0; border-bottom:1px solid var(--line); text-decoration:none; font-size:17px; font-weight:600}
@@ -245,9 +247,12 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   .card h3,.grid[data-n="2"] .card h3{font-size:21px}
   .acts{width:100%; justify-content:space-between}
   .acts .btn{flex:1}
-  .adv{grid-template-columns:1fr}
-  .adv>div{grid-template-columns:auto 1fr; column-gap:16px; padding:18px}
-  .adv .ico{grid-row:span 2}
+  .mapfull{height:auto}
+  .mapfull .map{position:relative; inset:auto; height:360px}
+  .map-ov{height:auto; display:block; padding-block:16px}
+  .mlist{width:100%; max-height:none; background:var(--bg-main); backdrop-filter:none; box-shadow:none; border:1px solid var(--line)}
+  .about{padding-block:40px}
+  .about-txt{font-size:16px}
   .foot{margin-top:64px; padding-block:40px 90px}
   .foot-grid{grid-template-columns:1fr}
   .mbar{display:block; position:sticky; bottom:0; z-index:15; padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px)); background:var(--bg-main); box-shadow:0 -1px 0 var(--line), 0 -6px 20px rgb(0 0 0 / .08); margin-top:-66px}
@@ -285,7 +290,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   <symbol id="i-wm" viewBox="0 0 120 44"><text x="0" y="30" font-family="Georgia, 'PT Serif', serif" font-size="32" font-weight="700" fill="currentColor" stroke="none">EG</text><text x="54" y="18" font-family="Arial, sans-serif" font-size="11" letter-spacing="3" fill="currentColor" stroke="none">HOTELS</text><text x="54" y="31" font-family="Arial, sans-serif" font-size="9" letter-spacing="1" fill="currentColor" stroke="none" opacity=".7">ИЖЕВСК</text></symbol>
 </svg>
 
-<section class="tb" aria-label="Настройки прототипа">
+<section class="tb" aria-label="Настройки прототипа" hidden>
   <div class="tb-top">
     <h1>Главная сети · прототип шаблона</h1>
     <p>Палитра, шрифты и логотип подставляются так, как их задаёт клиент в конструкторе.</p>
@@ -380,17 +385,13 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 
   <section class="sec" id="s-about">
     <div class="wrap about">
-      <div>
+      <div class="about-head">
         <p class="eyebrow">О сети</p>
-        <h2 style="font-size:clamp(28px,3.4cqi,40px); margin-bottom:20px">Гостеприимство в Ижевске без лишнего</h2>
-        <p class="about-txt clamp" id="aboutTxt"></p>
-        <button class="more" id="aboutMore" type="button" style="margin-top:12px" hidden>Читать полностью</button>
+        <h2>Гостиницы в Ижевске</h2>
       </div>
-      <div class="adv" data-token="Иконки и линии: навигация и декор">
-        <div><svg class="ico"><use href="#i-ruble"/></svg><h3>Цена и качество</h3><p>Честная цена для туристов и командировок.</p></div>
-        <div><svg class="ico"><use href="#i-bed"/></svg><h3>Новые кровати</h3><p>Свежие матрасы и ремонт во всех номерах.</p></div>
-        <div><svg class="ico"><use href="#i-route"/></svg><h3>Центр или вокзал</h3><p>Выбирайте отель под маршрут поездки.</p></div>
-        <div><svg class="ico"><use href="#i-orn"/></svg><h3>Местный колорит</h3><p>Удмуртские мотивы и работы местных художников.</p></div>
+      <div class="about-body" data-token="Текст описания из конструктора">
+        <div class="about-txt clamp" id="aboutTxt"></div>
+        <button class="more" id="aboutMore" type="button" hidden>Читать полностью</button>
       </div>
     </div>
   </section>
@@ -403,8 +404,8 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
           <h2>Как нас найти</h2>
         </div>
       </div>
-      <div class="mapbox">
-        <ul class="mlist" id="mlist"></ul>
+    </div>
+    <div class="mapfull">
         <div class="map" id="map" data-token="Живая Яндекс Карта, масштаб по меткам · метки: цвет кнопок">
           <svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
             <rect width="600" height="420" fill="color-mix(in srgb, var(--t-main) 4%, var(--bg-main))"/>
@@ -422,7 +423,9 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
           <div id="pins"></div>
           <div class="map-note"><a href="https://yandex.ru/maps/44/izhevsk/" target="_blank" rel="noopener">Открыть в Яндекс Картах ↗</a></div>
         </div>
-      </div>
+        <div class="wrap map-ov">
+          <ul class="mlist" id="mlist" data-token="Список отелей поверх карты: основной фон с прозрачностью"></ul>
+        </div>
     </div>
   </section>
 
@@ -452,12 +455,12 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 </div>
 </div>
 
-<p class="legend">Отели 3–6 и подписи преимуществ — примеры, чтобы проверить сетку. Карта нарисована схематично: в шаблоне это живая Яндекс Карта.</p>
+<p class="legend" hidden>Отели 3–6 и подписи преимуществ — примеры, чтобы проверить сетку. Карта нарисована схематично: в шаблоне это живая Яндекс Карта.</p>
 
 <script>
 const IMG = {a:"img/italmas-1.jpg", b:"img/teatr-2.jpg", c:"img/italmas-2.jpg", d:"img/teatr-1.jpg"};
 const PAL = {
-  eg:   {bgMain:"#F5F5F3", bgExtra:"#161616", bgSemi:"#000000", bgAcc:"#4E9F3D", bgDecor:"#74C677", tMain:"#000000", tExtra:"#FFFFFF", tSemi:"#FFFFFF", tAcc:"#FFFFFF", logoBg:"#FFFFFF"},
+  eg:   {bgMain:"#FDF8E8", bgExtra:"#161616", bgSemi:"#000000", bgAcc:"#4E9F3D", bgDecor:"#74C677", tMain:"#000000", tExtra:"#FFFFFF", tSemi:"#FFFFFF", tAcc:"#FFFFFF", logoBg:"#FFFFFF"},
   sea:  {bgMain:"#FFFFFF", bgExtra:"#0E2A47", bgSemi:"#0A1F33", bgAcc:"#E07A2E", bgDecor:"#3D97D3", tMain:"#1B2430", tExtra:"#FFFFFF", tSemi:"#FFFFFF", tAcc:"#FFFFFF", logoBg:"#FFFFFF"},
   wine: {bgMain:"#F6F1EC", bgExtra:"#3A1F24", bgSemi:"#2A1418", bgAcc:"#8E2433", bgDecor:"#C29A5B", tMain:"#2A1E1E", tExtra:"#F6F1EC", tSemi:"#FFFFFF", tAcc:"#FFFFFF", logoBg:"#F6F1EC"},
   dark: {bgMain:"#141618", bgExtra:"#0B0C0D", bgSemi:"#000000", bgAcc:"#D4B36A", bgDecor:"#D4B36A", tMain:"#ECEBE7", tExtra:"#ECEBE7", tSemi:"#FFFFFF", tAcc:"#141618", logoBg:"#141618"},
@@ -475,31 +478,39 @@ const LONG_TE = "Откройте для себя новый уровень св
 const ABOUT_SHORT = "Две гостиницы в Ижевске для разных поездок. «Театральная» стоит в историческом центре, рядом с драмтеатром, собором Александра Невского и набережной. «Италмас» в 15 минутах пешком от вокзала, его выбирают для деловых поездок. В обеих — новые кровати, современный ремонт и цены без переплаты за звёзды.";
 const ABOUT_LONG = "Два прекрасных отеля в Ижевске – выберите свой идеальный отдых! Мы рады представить вам две гостиницы — «Италмас» и «Театральная», каждая из которых предлагает уникальный опыт проживания и комфорт! Отель «Театральная» расположен в самом центре исторической части Ижевска! Отсюда рукой подать до главных достопримечательностей: величественного собора Александра Невского, знаменитого Русского драматического театра, живописной набережной и захватывающего парка аттракционов им. Горького. Погрузитесь в культурную жизнь города, остановившись в уютном и современном отеле! Отель «Италмас» идеально расположен для тех, кто ценит удобство транспортной доступности — всего в 15 минутах ходьбы от железнодорожного вокзала. Это прекрасный выбор для деловых поездок и путешествий, когда важна мобильность и близость к транспортным узлам. Отель Италмас создан с уклоном на удмуртский стиль, в холлах расположена выставка картин местных художников, каждый номер назван в честь городов и поселений Удмуртии.";
 
+// The client's real description text from the constructor, split into paragraphs.
+const ABOUT_PARAS = [
+  "Два прекрасных отеля в Ижевске – выберите свой идеальный отдых! Мы рады представить вам две гостиницы — «Италмас» и «Театральная», каждая из которых предлагает уникальный опыт проживания и комфорт!",
+  "Отель «Театральная» расположен в самом центре исторической части Ижевска! Отсюда рукой подать до главных достопримечательностей: величественного собора Александра Невского, знаменитого Русского драматического театра, живописной набережной и захватывающего парка аттракционов им. Горького. Погрузитесь в культурную жизнь города, остановившись в уютном и современном отеле!",
+  "Отель «Италмас» идеально расположен для тех, кто ценит удобство транспортной доступности — всего в 15 минутах ходьбы от железнодорожного вокзала. Это прекрасный выбор для деловых поездок и путешествий, когда важна мобильность и близость к транспортным узлам. Отель Италмас создан с уклоном на удмуртский стиль, в холлах расположена выставка картин местных художников, каждый номер назван в честь городов и поселений Удмуртии.",
+  "Что вас ждет в обеих гостиницах? Соотношение цена-качество, в наших отелях мы предлагаем лучший вариант для размещения туристов. Новые кровати для безупречного сна: отдохните и восстановите силы на удобных и современных кроватях. Современный дизайн: насладитесь стильным и функциональным интерьером, созданным для вашего комфорта.",
+  "Почему стоит выбрать именно нас? «Италмас» и «Театральная» — это не просто гостиницы, это ваш ключ к комфортному и незабываемому пребыванию в Ижевске! Выберите отель, который соответствует вашим потребностям, и наслаждайтесь гостеприимством и высоким уровнем сервиса. Забронируйте свой идеальный номер прямо сейчас и откройте для себя Ижевск с лучшей стороны!"
+];
 const HOTELS = [
   {id:"it", name:"Гостиница «Италмас»", longName:"Гостиница Италмас", city:"Ижевск", stars:3, addr:"ул. Гагарина, 5б", img:IMG.a, photos:24,
    tags:["1 км от вокзала","Удмуртский стиль","Завтраки"], tagsLong:["1 км от вокзала","Удмуртский стиль","Завтраки, обеды и ужины","Трансфер в аэропорт","Хранение багажа","Прачечная"],
    short:"Трёхзвёздочная гостиница в 15 минутах пешком от вокзала. Номера названы в честь городов Удмуртии, в холлах висят картины местных художников.", long:LONG_IT,
-   phone:"+7 (3412) 31-00-11", mail:"italmas.izh18@yandex.ru", price:"2 900", pos:[30,66]},
+   phone:"+7 (3412) 31-00-11", mail:"italmas.izh18@yandex.ru", price:"2 900", pos:[54,62]},
   {id:"te", name:"Гостиница «Театральная»", longName:"Гостиница \"Театральная\"", city:"Ижевск", stars:0, addr:"ул. Горького, 68", img:IMG.b, photos:18,
    tags:["Исторический центр","Заселение без ресепшена","Вид на собор"], tagsLong:["Исторический центр","Самостоятельное заселение","Вид на собор","Парк Горького рядом","Набережная"],
    short:"Современный отель напротив Русского драмтеатра и собора Александра Невского. Заселение самостоятельное, без стойки администратора.", long:LONG_TE,
-   phone:"8 (999) 280-51-50", mail:"hotelteatr@mail.ru", price:"3 400", pos:[58,30]},
+   phone:"8 (999) 280-51-50", mail:"hotelteatr@mail.ru", price:"3 400", pos:[70,30]},
   {id:"nb", name:"Апарт-отель «Набережная»", longName:"Апарт-отель «Набережная» на улице Максима Горького", city:"Ижевск", stars:0, addr:"ул. Свободы, 12", img:IMG.c, photos:12,
    tags:["Кухня в номере","У пруда"], tagsLong:["Кухня в номере","У пруда","Парковка","Долгое проживание"],
    short:"Апартаменты с кухней на берегу Ижевского пруда. Подходят для семейных поездок и долгого проживания.", long:"Апартаменты с кухней на берегу Ижевского пруда, в каждом номере есть всё для самостоятельного проживания: плита, холодильник, посуда, стиральная машина. Подходят для семейных поездок и долгого проживания, для гостей на неделю и дольше действуют специальные условия.",
-   phone:"+7 (3412) 00-00-01", mail:"nab@example.ru", price:"4 100", pos:[78,58]},
+   phone:"+7 (3412) 00-00-01", mail:"nab@example.ru", price:"4 100", pos:[84,54]},
   {id:"ka", name:"Отель «Кама»", longName:"Отель «Кама»", city:"Сарапул", stars:3, addr:"ул. Советская, 4", img:IMG.d, photos:9,
    tags:["Вид на Каму","Ресторан"], tagsLong:["Вид на Каму","Ресторан","Конференц-зал"],
    short:"Отель в старом купеческом центре Сарапула с видом на Каму.", long:"Отель в старом купеческом центре Сарапула с видом на Каму. Рядом пристань и краеведческий музей.",
-   phone:"+7 (34147) 0-00-02", mail:"kama@example.ru", price:"2 600", pos:[86,86]},
+   phone:"+7 (34147) 0-00-02", mail:"kama@example.ru", price:"2 600", pos:[90,80]},
   {id:"vo", name:"Гостевой дом «Чайковский»", longName:"Гостевой дом «Чайковский»", city:"Воткинск", stars:0, addr:"ул. Ленина, 20", img:IMG.a, photos:7,
    tags:["Рядом с музеем-усадьбой"], tagsLong:["Рядом с музеем-усадьбой","Сад","Завтраки"],
    short:"Небольшой гостевой дом в десяти минутах от музея-усадьбы П. И. Чайковского.", long:"Небольшой гостевой дом в десяти минутах от музея-усадьбы П. И. Чайковского. Восемь номеров, сад и домашние завтраки.",
-   phone:"+7 (34145) 0-00-03", mail:"dom@example.ru", price:"2 300", pos:[70,12]},
+   phone:"+7 (34145) 0-00-03", mail:"dom@example.ru", price:"2 300", pos:[78,12]},
   {id:"gl", name:"Мини-отель «Северный»", longName:"Мини-отель «Северный»", city:"Глазов", stars:0, addr:"ул. Кирова, 9", img:IMG.b, photos:6,
    tags:["Парковка","Круглосуточно"], tagsLong:["Парковка","Круглосуточно","Для командировок"],
    short:"Мини-отель для командировок в центре Глазова, с парковкой.", long:"Мини-отель для командировок в центре Глазова. Парковка, круглосуточная стойка, отчётные документы.",
-   phone:"+7 (34141) 0-00-04", mail:"sever@example.ru", price:"2 100", pos:[16,18]},
+   phone:"+7 (34141) 0-00-04", mail:"sever@example.ru", price:"2 100", pos:[46,16]},
 ];
 
 const S = {pal:"eg", custom:{...PAL.eg}, fh:"Open Sans", fb:"Open Sans", n:2, logo:"plaque", len:"short", vp:"d", city:"Все", sel:"it"};
@@ -581,7 +592,7 @@ function renderMap(){
 }
 function renderAbout(){
   const t = $("#aboutTxt"), b = $("#aboutMore");
-  t.textContent = S.len==="long" ? ABOUT_LONG : ABOUT_SHORT;
+  t.innerHTML = ABOUT_PARAS.map(p => `<p>${esc(p)}</p>`).join("");
   t.classList.add("clamp"); b.textContent = "Читать полностью";
   requestAnimationFrame(()=>{ b.hidden = t.scrollHeight <= t.clientHeight + 2; });
 }
