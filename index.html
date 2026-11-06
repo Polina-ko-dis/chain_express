@@ -1,10 +1,653 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <title>Мой сайт</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Главная сети EG Hotels</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&family=Playfair+Display:wght@500;700&family=Raleway:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* Layout: prototype toolbar on top, then the template preview in a frame.
+   Prototype chrome uses --ui-* tokens (theme-aware).
+   The site itself uses ONLY the constructor's 9 colors + logo bg + 2 fonts (set by JS). */
+:root{
+  --ui-bg:#e9ecef; --ui-panel:#ffffff; --ui-fg:#1d2329; --ui-muted:#5f6a75; --ui-line:#d3d9df; --ui-accent:#2a63d4;
+  --ui-font: "PT Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --tok:#d81b72;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --ui-bg:#15181c; --ui-panel:#1f2328; --ui-fg:#e6e9ec; --ui-muted:#9aa4ae; --ui-line:#353b42; --ui-accent:#7ea6ff; color-scheme:dark}}
+:root[data-theme="dark"]{--ui-bg:#15181c; --ui-panel:#1f2328; --ui-fg:#e6e9ec; --ui-muted:#9aa4ae; --ui-line:#353b42; --ui-accent:#7ea6ff; color-scheme:dark}
+
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--ui-bg); color:var(--ui-fg); font-family:var(--ui-font);
+  padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); padding-block:0 40px}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:50; background:var(--ui-bg)}
+button,input,select{font:inherit}
+:focus-visible{outline:2px solid var(--ui-accent); outline-offset:2px}
+
+/* ---------- prototype toolbar ---------- */
+.tb{max-width:1280px; margin:16px auto 14px; background:var(--ui-panel); border:1px solid var(--ui-line); border-radius:10px; padding:14px 16px; display:grid; gap:12px}
+.tb-top{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 16px}
+.tb-top h1{margin:0; font-size:17px; font-weight:700}
+.tb-top p{margin:0; color:var(--ui-muted); font-size:13px}
+.tb-row{display:flex; flex-wrap:wrap; gap:10px 18px; align-items:flex-end}
+.ctl{display:grid; gap:4px; min-width:0}
+.ctl>span{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ui-muted)}
+.ctl select{height:32px; border:1px solid var(--ui-line); border-radius:6px; background:var(--ui-panel); color:var(--ui-fg); padding:0 8px; max-width:100%}
+.seg{display:inline-flex; border:1px solid var(--ui-line); border-radius:6px; overflow:hidden}
+.seg button{border:0; background:transparent; color:var(--ui-fg); height:30px; padding:0 10px; cursor:pointer; font-size:13px}
+.seg button+button{border-left:1px solid var(--ui-line)}
+.seg button[aria-pressed="true"]{background:var(--ui-accent); color:var(--ui-panel)}
+.chk{display:flex; align-items:center; gap:6px; font-size:13px; height:32px; cursor:pointer}
+details.cols{border-top:1px solid var(--ui-line); padding-top:10px}
+details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
+.cols-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px 16px; margin-top:10px}
+.cols-grid h3{grid-column:1/-1; margin:6px 0 0; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ui-muted)}
+.cols-grid label{display:flex; align-items:center; gap:8px; font-size:13px}
+.cols-grid input[type=color]{width:34px; height:26px; padding:0; border:1px solid var(--ui-line); border-radius:4px; background:none}
+
+/* ---------- stage ---------- */
+.stage{max-width:1280px; margin:0 auto}
+.stage.is-mobile .site{max-width:390px}
+.site{
+  --bg-main:#F5F5F3; --bg-extra:#161616; --bg-semi:#000; --bg-acc:#4E9F3D; --bg-decor:#74C677;
+  --t-main:#000; --t-extra:#fff; --t-semi:#fff; --t-acc:#fff; --logo-bg:#fff;
+  --f-head:"Open Sans"; --f-body:"Open Sans";
+  --semi: color-mix(in srgb, var(--bg-semi) 55%, transparent);
+  --muted: color-mix(in srgb, var(--t-main) 62%, var(--bg-main));
+  --line: color-mix(in srgb, var(--t-main) 13%, var(--bg-main));
+  --soft: color-mix(in srgb, var(--t-main) 4%, var(--bg-main));
+  --decor-soft: color-mix(in srgb, var(--bg-decor) 16%, var(--bg-main));
+  --head: var(--f-head), "Open Sans", "PT Sans", Arial, sans-serif;
+  --body: var(--f-body), "Open Sans", "PT Sans", Arial, sans-serif;
+  container: site / inline-size;
+  margin:0 auto; background:var(--bg-main); color:var(--t-main); font-family:var(--body); font-size:16px; line-height:1.55;
+  border-radius:10px; overflow:clip; box-shadow:0 1px 3px rgb(0 0 0 / .12), 0 12px 40px rgb(0 0 0 / .10);
+  transition:max-width .3s ease;
+}
+.site h1,.site h2,.site h3{font-family:var(--head); text-wrap:balance; margin:0; line-height:1.18}
+.site a{color:inherit}
+.wrap{max-width:1200px; margin:0 auto; padding-inline:40px}
+.ico{width:18px; height:18px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:46px; padding:0 22px; border-radius:4px; border:0; cursor:pointer; text-decoration:none; font-weight:600; font-size:15px; white-space:nowrap}
+.btn-acc{background:var(--bg-acc); color:var(--t-acc)}
+.btn-acc:hover{filter:brightness(1.08)}
+.btn-ghost{background:transparent; color:inherit; border:1px solid currentColor}
+.link{display:inline-flex; align-items:center; gap:6px; font-weight:600; font-size:15px; text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px}
+.link:hover{border-color:currentColor}
+
+/* header */
+.hdr{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; height:76px; margin-bottom:-76px; background:var(--semi); color:var(--t-semi); transition:background .25s, color .25s, box-shadow .25s; backdrop-filter:blur(6px)}
+.hdr.is-solid{background:var(--bg-main); color:var(--t-main); box-shadow:0 1px 0 var(--line)}
+.hdr-in{height:100%; display:flex; align-items:center; gap:28px}
+.logo{display:flex; align-items:center; text-decoration:none; flex:none}
+.logo-box{display:flex; align-items:center; justify-content:center}
+.logo.plaque .logo-box{background:var(--logo-bg); padding:6px; height:64px; width:64px}
+.logo.plaque img{width:52px; height:52px; display:block}
+.logo .wm{display:none; height:40px}
+.logo.clear img{display:none}
+.logo.clear .wm{display:block}
+.nav{display:flex; gap:26px; font-size:15px}
+.nav a{text-decoration:none; opacity:.92; padding-block:6px; border-bottom:2px solid transparent}
+.nav a:hover{border-color:var(--bg-decor)}
+.hdr-r{margin-left:auto; display:flex; align-items:center; gap:18px; font-size:15px}
+.hdr-phone{font-weight:600; white-space:nowrap; font-variant-numeric:tabular-nums}
+.lang{font-size:14px; font-weight:600; letter-spacing:.04em; padding-left:18px; border-left:1px solid color-mix(in srgb, currentColor 30%, transparent)}
+.burger{display:none; background:none; border:0; color:inherit; cursor:pointer; padding:6px}
+.mnav{display:none}
+
+/* hero */
+.hero{position:relative; min-height:620px; display:flex; align-items:flex-end; color:var(--t-semi); background:var(--bg-semi)}
+.hero-slides img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.2s ease}
+.hero-slides img.on{opacity:1}
+.hero-shade{position:absolute; inset:0; background:linear-gradient(to top, color-mix(in srgb,var(--bg-semi) 78%,transparent) 0%, color-mix(in srgb,var(--bg-semi) 30%,transparent) 55%, color-mix(in srgb,var(--bg-semi) 45%,transparent) 100%)}
+.hero-in{position:relative; width:100%; padding-block:0 120px}
+.hero-kicker{margin:0 0 14px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; display:flex; align-items:center; gap:10px}
+.hero-kicker::before{content:""; width:28px; height:2px; background:var(--bg-decor)}
+.hero h1{font-size:clamp(34px, 5.2cqi, 60px); font-weight:700; max-width:16ch}
+.hero-sub{margin:16px 0 0; font-size:19px; max-width:46ch; opacity:.92}
+.hero-dots{position:absolute; right:40px; bottom:126px; display:flex; gap:8px}
+.hero-dots button{width:28px; height:3px; border:0; padding:0; background:color-mix(in srgb,var(--t-semi) 40%,transparent); cursor:pointer}
+.hero-dots button.on{background:var(--bg-decor)}
+
+/* search */
+.search-wrap{position:relative; z-index:5; margin-top:-64px}
+.search{position:relative; background:var(--bg-main); color:var(--t-main); border-radius:6px; box-shadow:0 10px 40px rgb(0 0 0 / .16); padding:18px; display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr auto; gap:0; align-items:stretch}
+.fld{display:grid; gap:2px; padding:8px 18px; border-right:1px solid var(--line); min-width:0}
+.fld:nth-last-child(2){border-right:0}
+.fld label{font-size:12px; color:var(--muted)}
+.fld select,.fld input{border:0; background:transparent; color:var(--t-main); font-size:16px; font-weight:600; padding:2px 0; width:100%; min-width:0; color-scheme:inherit; cursor:pointer}
+.search .btn{height:auto; min-height:56px; padding:0 30px; font-size:16px}
+
+/* sections */
+.sec{padding-block:96px 0}
+.sec-head{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:14px 24px; margin-bottom:36px}
+.sec-head h2{font-size:clamp(28px, 3.4cqi, 40px); font-weight:700}
+.sec-head .sub{margin:8px 0 0; color:var(--muted); font-size:17px; max-width:52ch}
+.eyebrow{display:flex; align-items:center; gap:10px; margin:0 0 12px; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted)}
+.eyebrow::before{content:""; width:22px; height:2px; background:var(--bg-decor)}
+
+.filters{display:flex; flex-wrap:wrap; gap:8px}
+.chip{height:36px; padding:0 16px; border-radius:18px; border:1px solid var(--line); background:transparent; color:var(--t-main); cursor:pointer; font-size:14px}
+.chip[aria-pressed="true"]{background:var(--bg-acc); color:var(--t-acc); border-color:var(--bg-acc)}
+
+/* hotel cards */
+.grid{display:grid; gap:28px; grid-template-columns:repeat(3,minmax(0,1fr))}
+.grid[data-n="2"]{grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px}
+.card{display:flex; flex-direction:column; min-width:0; background:var(--bg-main); border:1px solid var(--line); border-radius:6px; overflow:hidden}
+.card-media{position:relative; aspect-ratio:3/2; max-width:100%; background:var(--soft); overflow:hidden}
+.grid[data-n="2"] .card-media{aspect-ratio:16/10}
+.card-media img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease}
+.card:hover .card-media img{transform:scale(1.03)}
+.card-city{position:absolute; left:14px; top:14px; background:var(--semi); color:var(--t-semi); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:5px 10px; border-radius:3px}
+.card-cnt{position:absolute; right:14px; bottom:14px; background:var(--semi); color:var(--t-semi); font-size:12px; padding:4px 9px; border-radius:3px; display:flex; gap:6px; align-items:center}
+.card-body{display:flex; flex-direction:column; gap:12px; padding:22px 24px 24px; flex:1; min-width:0}
+.card h3{font-size:22px; font-weight:700}
+.grid[data-n="2"] .card h3{font-size:26px}
+.stars{color:var(--bg-decor); letter-spacing:2px; font-size:14px; line-height:1}
+.addr{margin:0; display:flex; gap:8px; color:var(--muted); font-size:15px}
+.addr .ico{color:var(--bg-decor); margin-top:3px}
+.tags{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px}
+.tags li{font-size:13px; padding:4px 10px; border-radius:3px; background:var(--decor-soft); color:var(--t-main)}
+.desc{margin:0; font-size:15px; color:color-mix(in srgb,var(--t-main) 82%,var(--bg-main)); display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden}
+.desc.open{-webkit-line-clamp:unset; display:block}
+.more{align-self:flex-start; background:none; border:0; padding:0; color:var(--t-main); font-weight:600; font-size:14px; cursor:pointer; text-decoration:underline; text-decoration-color:var(--bg-decor); text-underline-offset:4px; text-decoration-thickness:2px}
+.card-foot{margin-top:auto; padding-top:16px; border-top:1px solid var(--line)}
+.acts{display:flex; align-items:center; gap:18px; flex-wrap:wrap}
+
+/* about */
+.about{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:56px; align-items:start}
+.about-txt{font-size:17px; margin:0}
+.about-txt.clamp{display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:6; overflow:hidden}
+.adv{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:6px; overflow:hidden}
+.adv>div{background:var(--bg-main); padding:26px 24px; display:grid; gap:8px; align-content:start}
+.adv .ico{width:30px; height:30px; color:var(--bg-decor); stroke-width:1.5}
+.adv h3{font-size:18px; font-weight:700}
+.adv p{margin:0; font-size:15px; color:var(--muted)}
+
+/* map + contacts */
+.mapbox{display:grid; grid-template-columns:minmax(0,380px) minmax(0,1fr); border:1px solid var(--line); border-radius:6px; overflow:hidden; min-height:480px}
+.mlist{list-style:none; margin:0; padding:0; max-height:560px; overflow:auto; border-right:1px solid var(--line)}
+.mlist li+li{border-top:1px solid var(--line)}
+.mitem{all:unset; box-sizing:border-box; display:grid; grid-template-columns:auto 1fr; gap:4px 14px; width:100%; padding:20px 22px; cursor:pointer}
+.mitem:focus-visible{outline:2px solid var(--bg-acc); outline-offset:-2px}
+.mitem[aria-current="true"]{background:var(--decor-soft)}
+.num{grid-row:span 4; width:28px; height:28px; border-radius:50%; background:var(--bg-acc); color:var(--t-acc); font-size:13px; font-weight:700; display:grid; place-items:center; font-variant-numeric:tabular-nums}
+.mitem b{font-family:var(--head); font-size:17px}
+.mitem span{font-size:14px; color:var(--muted)}
+.mitem .ph{color:var(--t-main); font-weight:600; font-variant-numeric:tabular-nums}
+.map{position:relative; background:var(--soft); min-height:320px}
+.map svg{position:absolute; inset:0; width:100%; height:100%}
+.pin{position:absolute; transform:translate(-50%,-100%); display:flex; flex-direction:column; align-items:center; border:0; background:none; padding:0; cursor:pointer; transition:transform .2s}
+.pin i{font-style:normal; width:30px; height:30px; border-radius:50% 50% 50% 0; transform:rotate(-45deg); background:var(--bg-acc); display:grid; place-items:center; box-shadow:0 3px 8px rgb(0 0 0 / .25)}
+.pin i span{transform:rotate(45deg); color:var(--t-acc); font-size:12px; font-weight:700}
+.pin em{font-style:normal; margin-top:8px; background:var(--bg-main); color:var(--t-main); font-size:12px; font-weight:600; padding:3px 8px; border-radius:3px; box-shadow:0 1px 4px rgb(0 0 0 / .18); white-space:nowrap; opacity:0; transition:opacity .2s}
+.pin.on{transform:translate(-50%,-100%) scale(1.18); z-index:2}
+.pin.on em{opacity:1}
+.map-note{position:absolute; left:14px; bottom:14px; right:14px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; font-size:12px; color:var(--muted)}
+.map-note a{background:var(--bg-main); color:var(--t-main); padding:6px 10px; border-radius:3px; text-decoration:none; font-weight:600; box-shadow:0 1px 4px rgb(0 0 0 / .14)}
+
+/* footer */
+.foot{margin-top:96px; background:var(--bg-extra); color:var(--t-extra); padding-block:56px 28px}
+.foot-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:32px}
+.foot h4{margin:0 0 14px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; opacity:.6; font-weight:600}
+.foot ul{list-style:none; margin:0; padding:0; display:grid; gap:8px; font-size:15px}
+.foot a{text-decoration:none}
+.foot a:hover{text-decoration:underline}
+.foot .big{font-family:var(--head); font-size:22px; font-weight:700; font-variant-numeric:tabular-nums}
+.msgr{display:flex; gap:10px; margin-top:12px}
+.msgr a{width:38px; height:38px; border-radius:50%; border:1px solid color-mix(in srgb,var(--t-extra) 30%,transparent); display:grid; place-items:center}
+.foot-bot{margin-top:44px; padding-top:20px; border-top:1px solid color-mix(in srgb,var(--t-extra) 16%,transparent); display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; font-size:13px; opacity:.7}
+.foot .wmark{color:var(--t-extra); height:38px; display:block; margin-bottom:14px}
+
+.mbar{display:none}
+
+/* ---------- tablet ---------- */
+@container site (max-width: 1000px){
+  .wrap{padding-inline:28px}
+  .nav{display:none}
+  .burger{display:block}
+  .search{grid-template-columns:1fr 1fr; gap:4px; padding:12px}
+  .fld{border-right:0; border-bottom:1px solid var(--line); padding:10px 12px}
+  .search .btn{grid-column:1/-1; min-height:52px; margin-top:6px}
+  .fld:nth-last-child(2){border-bottom:1px solid var(--line)}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .about{grid-template-columns:1fr; gap:32px}
+  .mapbox{grid-template-columns:1fr}
+  .map{order:-1; min-height:340px}
+  .mlist{border-right:0; border-top:1px solid var(--line); max-height:none}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .mnav.open{display:grid; position:absolute; top:76px; left:0; right:0; background:var(--bg-main); color:var(--t-main); box-shadow:0 10px 30px rgb(0 0 0 / .15); padding:8px 28px 18px}
+  .mnav a{padding:14px 0; border-bottom:1px solid var(--line); text-decoration:none; font-size:17px; font-weight:600}
+}
+/* ---------- phone ---------- */
+@container site (max-width: 620px){
+  .wrap{padding-inline:16px}
+  .hdr{height:64px; margin-bottom:-64px}
+  .mnav.open{top:64px; padding-inline:16px}
+  .hdr-r .btn,.hdr-phone,.lang{display:none}
+  .logo.plaque .logo-box{height:52px; width:52px; padding:5px}
+  .logo.plaque img{width:42px; height:42px}
+  .logo .wm{height:32px}
+  .hdr-call{display:grid !important}
+  .hero{min-height:520px}
+  .hero-in{padding-block:0 96px}
+  .hero-sub{font-size:16px}
+  .hero-dots{right:16px; bottom:100px}
+  .search-wrap{margin-top:-52px}
+  .search{grid-template-columns:1fr 1fr}
+  .fld:first-child{grid-column:1/-1}
+  .fld:nth-child(4){grid-column:1/-1}
+  .sec{padding-block:64px 0}
+  .grid,.grid[data-n="2"]{grid-template-columns:1fr; gap:20px}
+  .card-body{padding:18px}
+  .card h3,.grid[data-n="2"] .card h3{font-size:21px}
+  .acts{width:100%; justify-content:space-between}
+  .acts .btn{flex:1}
+  .adv{grid-template-columns:1fr}
+  .adv>div{grid-template-columns:auto 1fr; column-gap:16px; padding:18px}
+  .adv .ico{grid-row:span 2}
+  .foot{margin-top:64px; padding-block:40px 90px}
+  .foot-grid{grid-template-columns:1fr}
+  .mbar{display:block; position:sticky; bottom:0; z-index:15; padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px)); background:var(--bg-main); box-shadow:0 -1px 0 var(--line), 0 -6px 20px rgb(0 0 0 / .08); margin-top:-66px}
+  .mbar .btn{width:100%}
+}
+.hdr-call{display:none; width:38px; height:38px; border-radius:50%; border:1px solid currentColor; place-items:center; color:inherit}
+
+/* ---------- token annotations ---------- */
+.show-tokens [data-token]{outline:2px dashed var(--tok); outline-offset:-2px; position:relative}
+.show-tokens .hdr[data-token]{position:sticky}
+.show-tokens [data-token]::after{content:attr(data-token); position:absolute; left:6px; top:6px; z-index:30; background:var(--tok); color:#fff; font:600 11px/1.3 var(--ui-font); padding:3px 7px; border-radius:3px; pointer-events:none; white-space:nowrap; max-width:calc(100% - 12px); overflow:hidden; text-overflow:ellipsis}
+.show-tokens .hdr[data-token]::after{top:auto; bottom:-22px}
+
+.legend{max-width:1280px; margin:14px auto 0; font-size:13px; color:var(--ui-muted)}
+
+@media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important}}
+</style>
+<style>body{margin:0} img{max-width:100%} [hidden]{display:none!important} :root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}</style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 6 6L15 14l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-8 8"/></symbol>
+  <symbol id="i-ruble" viewBox="0 0 24 24"><path d="M8 20V4h6a4 4 0 0 1 0 8H6M6 16h9"/></symbol>
+  <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18V7M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="1.6"/></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/></symbol>
+  <symbol id="i-orn" viewBox="0 0 24 24"><path d="M12 2v20M2 12h20M5 5l14 14M19 5 5 19"/><path d="m12 6 3 3-3 3-3-3zM12 12l3 3-3 3-3-3z"/></symbol>
+  <symbol id="i-tg" viewBox="0 0 24 24"><path d="m21 4-18 7 6 2 2 6 3-4 5 4z"/><path d="m9 13 8-6"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c.5 2.5 2.5 4.5 5 5l1-1.5-2-1-1 .8c-.9-.4-1.6-1.1-2-2l.8-1-1-2z"/></symbol>
+  <symbol id="i-wm" viewBox="0 0 120 44"><text x="0" y="30" font-family="Georgia, 'PT Serif', serif" font-size="32" font-weight="700" fill="currentColor" stroke="none">EG</text><text x="54" y="18" font-family="Arial, sans-serif" font-size="11" letter-spacing="3" fill="currentColor" stroke="none">HOTELS</text><text x="54" y="31" font-family="Arial, sans-serif" font-size="9" letter-spacing="1" fill="currentColor" stroke="none" opacity=".7">ИЖЕВСК</text></symbol>
+</svg>
+
+<section class="tb" aria-label="Настройки прототипа">
+  <div class="tb-top">
+    <h1>Главная сети · прототип шаблона</h1>
+    <p>Палитра, шрифты и логотип подставляются так, как их задаёт клиент в конструкторе.</p>
+  </div>
+  <div class="tb-row">
+    <label class="ctl"><span>Палитра клиента</span>
+      <select id="pal">
+        <option value="eg">EG Hotels (текущая)</option>
+        <option value="sea">Морская</option>
+        <option value="wine">Бордо и золото</option>
+        <option value="dark">Тёмная</option>
+        <option value="mono">Монохром</option>
+        <option value="custom">Пользовательская</option>
+      </select></label>
+    <label class="ctl"><span>Шрифт заголовков</span><select id="fh"></select></label>
+    <label class="ctl"><span>Шрифт текста</span><select id="fb"></select></label>
+    <div class="ctl"><span>Отелей в сети</span><div class="seg" id="cnt"><button type="button" data-v="2" aria-pressed="true">2</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="6" aria-pressed="false">6</button></div></div>
+    <div class="ctl"><span>Логотип</span><div class="seg" id="logo"><button type="button" data-v="plaque" aria-pressed="true">На плашке</button><button type="button" data-v="clear" aria-pressed="false">Без фона</button></div></div>
+    <div class="ctl"><span>Тексты</span><div class="seg" id="len"><button type="button" data-v="short" aria-pressed="true">Как в ТЗ</button><button type="button" data-v="long" aria-pressed="false">Как у клиента</button></div></div>
+    <div class="ctl"><span>Экран</span><div class="seg" id="vp"><button type="button" data-v="d" aria-pressed="true">Десктоп</button><button type="button" data-v="m" aria-pressed="false">Телефон</button></div></div>
+    <label class="chk"><input type="checkbox" id="tok"> Показать, где какой цвет</label>
+  </div>
+  <details class="cols" id="colsBox">
+    <summary>Цвета конструктора</summary>
+    <div class="cols-grid" id="cols"></div>
+  </details>
+</section>
+
+<div class="stage" id="stage">
+<div class="site" id="site">
+
+  <header class="hdr" id="hdr" data-token="Шапка: полупрозрачный → основной при прокрутке">
+    <div class="wrap hdr-in">
+      <a class="logo plaque" id="logoEl" href="#top" aria-label="EG Hotels, на главную">
+        <span class="logo-box">
+          <img alt="" src="img/logo.png">
+          <svg class="wm" viewBox="0 0 120 44" width="110"><use href="#i-wm"/></svg>
+        </span>
+      </a>
+      <nav class="nav" aria-label="Разделы">
+        <a href="#s-hotels">Отели</a><a href="#s-about">О сети</a><a href="#s-map">Карта и контакты</a>
+      </nav>
+      <div class="hdr-r">
+        <span class="hdr-phone">8 (999) 280-51-50</span>
+        <span class="lang" title="Язык сайта">RU</span>
+        <a class="hdr-call" href="#s-map" aria-label="Контакты"><svg class="ico"><use href="#i-phone"/></svg></a>
+        <button class="burger" id="burger" type="button" aria-label="Меню" aria-expanded="false"><svg class="ico" style="width:26px;height:26px"><use href="#i-menu"/></svg></button>
+      </div>
+    </div>
+    <nav class="mnav" id="mnav" aria-label="Меню">
+      <a href="#s-hotels">Отели</a><a href="#s-about">О сети</a><a href="#s-map">Карта и контакты</a><a href="#s-map">8 (999) 280-51-50</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="top" data-token="Первый экран: текст «на полупрозрачном», затемнение — полупрозрачный">
+    <div class="hero-slides" id="slides">
+      <img class="on" alt="Номер гостиницы «Италмас»" src="img/italmas-1.jpg">
+      <img alt="Номер гостиницы «Театральная» с видом на собор" src="img/teatr-2.jpg">
+      <img alt="Номер гостиницы «Италмас»" src="img/italmas-2.jpg">
+    </div>
+    <div class="hero-shade"></div>
+    <div class="wrap hero-in">
+      <p class="hero-kicker" id="heroKicker">Ижевск · 2 гостиницы</p>
+      <h1 id="heroTitle">Гостиницы EG Hotels в Ижевске</h1>
+      <p class="hero-sub" id="heroSub">Рядом с вокзалом и в историческом центре. Выберите отель под свою поездку.</p>
+    </div>
+    <div class="hero-dots" id="dots"></div>
+  </section>
+
+  <div class="wrap search-wrap">
+    <form class="search" id="search" data-token="Форма поиска: основной фон · кнопка «форма поиска и кнопки»">
+      <div class="fld"><label for="sHotel">Отель</label><select id="sHotel"></select></div>
+      <div class="fld"><label for="sIn">Заезд</label><input id="sIn" type="date"></div>
+      <div class="fld"><label for="sOut">Выезд</label><input id="sOut" type="date"></div>
+      <div class="fld"><label for="sGuests">Гости</label><select id="sGuests"><option>1 взрослый</option><option selected>2 взрослых</option><option>2 взрослых, 1 ребёнок</option><option>3 взрослых</option></select></div>
+      <button class="btn btn-acc" type="submit">Найти номер</button>
+    </form>
+  </div>
+
+  <section class="sec" id="s-hotels">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Отели сети</p>
+          <h2 id="hotelsTitle">Две гостиницы для разных поездок</h2>
+        </div>
+        <div class="filters" id="filters" hidden></div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="s-about">
+    <div class="wrap about">
+      <div>
+        <p class="eyebrow">О сети</p>
+        <h2 style="font-size:clamp(28px,3.4cqi,40px); margin-bottom:20px">Гостеприимство в Ижевске без лишнего</h2>
+        <p class="about-txt clamp" id="aboutTxt"></p>
+        <button class="more" id="aboutMore" type="button" style="margin-top:12px" hidden>Читать полностью</button>
+      </div>
+      <div class="adv" data-token="Иконки и линии: навигация и декор">
+        <div><svg class="ico"><use href="#i-ruble"/></svg><h3>Цена и качество</h3><p>Честная цена для туристов и командировок.</p></div>
+        <div><svg class="ico"><use href="#i-bed"/></svg><h3>Новые кровати</h3><p>Свежие матрасы и ремонт во всех номерах.</p></div>
+        <div><svg class="ico"><use href="#i-route"/></svg><h3>Центр или вокзал</h3><p>Выбирайте отель под маршрут поездки.</p></div>
+        <div><svg class="ico"><use href="#i-orn"/></svg><h3>Местный колорит</h3><p>Удмуртские мотивы и работы местных художников.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="s-map">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Карта и контакты</p>
+          <h2>Как нас найти</h2>
+        </div>
+      </div>
+      <div class="mapbox">
+        <ul class="mlist" id="mlist"></ul>
+        <div class="map" id="map" data-token="Живая Яндекс Карта, масштаб по меткам · метки: цвет кнопок">
+          <svg viewBox="0 0 600 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <rect width="600" height="420" fill="color-mix(in srgb, var(--t-main) 4%, var(--bg-main))"/>
+            <path d="M-20 300 C 80 260, 140 330, 240 300 S 400 210, 470 250 S 580 300, 640 260 L640 330 C 560 360, 500 300, 440 320 S 300 380, 220 360 S 60 340, -20 370Z" fill="color-mix(in srgb, var(--bg-decor) 26%, var(--bg-main))"/>
+            <ellipse cx="470" cy="120" rx="70" ry="44" fill="color-mix(in srgb, var(--bg-decor) 14%, var(--bg-main))"/>
+            <ellipse cx="120" cy="110" rx="50" ry="34" fill="color-mix(in srgb, var(--bg-decor) 14%, var(--bg-main))"/>
+            <g stroke="color-mix(in srgb, var(--t-main) 10%, var(--bg-main))" stroke-width="10" fill="none" stroke-linecap="round">
+              <path d="M-10 60 L 610 40"/><path d="M-10 170 L 610 150"/><path d="M-10 240 L 610 220"/>
+              <path d="M90 -10 L 120 430"/><path d="M250 -10 L 270 430"/><path d="M400 -10 L 410 430"/>
+            </g>
+            <g stroke="color-mix(in srgb, var(--t-main) 7%, var(--bg-main))" stroke-width="4" fill="none">
+              <path d="M-10 110 L 610 95"/><path d="M-10 395 L 610 380"/><path d="M170 -10 L 195 430"/><path d="M330 -10 L 340 430"/><path d="M520 -10 L 525 430"/>
+            </g>
+          </svg>
+          <div id="pins"></div>
+          <div class="map-note"><a href="https://yandex.ru/maps/44/izhevsk/" target="_blank" rel="noopener">Открыть в Яндекс Картах ↗</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot" data-token="Подвал: дополнительный фон и текст">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <svg class="wmark" viewBox="0 0 120 44" width="104"><use href="#i-wm"/></svg>
+          <p style="margin:0; font-size:15px; opacity:.8; max-width:30ch">Сеть гостиниц в Ижевске: «Италмас» у вокзала и «Театральная» в историческом центре.</p>
+        </div>
+        <div>
+          <h4>Отели</h4>
+          <ul id="footHotels"></ul>
+        </div>
+        <div>
+          <h4>Связаться</h4>
+          <div class="big">8 (999) 280-51-50</div>
+          <ul style="margin-top:8px"><li>hotelteatr@mail.ru</li></ul>
+          <div class="msgr"><a href="#s-map" aria-label="Telegram"><svg class="ico"><use href="#i-tg"/></svg></a><a href="#s-map" aria-label="WhatsApp"><svg class="ico"><use href="#i-wa"/></svg></a></div>
+        </div>
+      </div>
+      <div class="foot-bot"><span>© <span id="yr"></span> EG Hotels. Официальный сайт</span><span>Работает на TravelLine</span></div>
+    </div>
+  </footer>
+
+  <div class="mbar"><a class="btn btn-acc" href="#top" data-book>Забронировать</a></div>
+</div>
+</div>
+
+<p class="legend">Отели 3–6 и подписи преимуществ — примеры, чтобы проверить сетку. Карта нарисована схематично: в шаблоне это живая Яндекс Карта.</p>
+
+<script>
+const IMG = {a:"img/italmas-1.jpg", b:"img/teatr-2.jpg", c:"img/italmas-2.jpg", d:"img/teatr-1.jpg"};
+const PAL = {
+  eg:   {bgMain:"#F5F5F3", bgExtra:"#161616", bgSemi:"#000000", bgAcc:"#4E9F3D", bgDecor:"#74C677", tMain:"#000000", tExtra:"#FFFFFF", tSemi:"#FFFFFF", tAcc:"#FFFFFF", logoBg:"#FFFFFF"},
+  sea:  {bgMain:"#FFFFFF", bgExtra:"#0E2A47", bgSemi:"#0A1F33", bgAcc:"#E07A2E", bgDecor:"#3D97D3", tMain:"#1B2430", tExtra:"#FFFFFF", tSemi:"#FFFFFF", tAcc:"#FFFFFF", logoBg:"#FFFFFF"},
+  wine: {bgMain:"#F6F1EC", bgExtra:"#3A1F24", bgSemi:"#2A1418", bgAcc:"#8E2433", bgDecor:"#C29A5B", tMain:"#2A1E1E", tExtra:"#F6F1EC", tSemi:"#FFFFFF", tAcc:"#FFFFFF", logoBg:"#F6F1EC"},
+  dark: {bgMain:"#141618", bgExtra:"#0B0C0D", bgSemi:"#000000", bgAcc:"#D4B36A", bgDecor:"#D4B36A", tMain:"#ECEBE7", tExtra:"#ECEBE7", tSemi:"#FFFFFF", tAcc:"#141618", logoBg:"#141618"},
+  mono: {bgMain:"#FFFFFF", bgExtra:"#F0F0F0", bgSemi:"#FFFFFF", bgAcc:"#111111", bgDecor:"#9A9A9A", tMain:"#111111", tExtra:"#111111", tSemi:"#111111", tAcc:"#FFFFFF", logoBg:"#FFFFFF"},
+};
+const COLS = [
+  ["Цвета фона",null],["bgMain","Основной"],["bgExtra","Дополнительный"],["bgSemi","Полупрозрачный"],["bgAcc","Форма поиска и кнопки"],["bgDecor","Навигация и декор"],
+  ["Цвета текстов",null],["tMain","На основном фоне"],["tExtra","На дополнительном"],["tSemi","На полупрозрачном"],["tAcc","На акцентном фоне"],
+  ["Логотип",null],["logoBg","Цвет фона логотипа"]];
+const VAR = {bgMain:"--bg-main",bgExtra:"--bg-extra",bgSemi:"--bg-semi",bgAcc:"--bg-acc",bgDecor:"--bg-decor",tMain:"--t-main",tExtra:"--t-extra",tSemi:"--t-semi",tAcc:"--t-acc",logoBg:"--logo-bg"};
+const FONTS = ["Open Sans","PT Sans","Roboto","Montserrat","Raleway","PT Serif","Lora","Playfair Display"];
+
+const LONG_IT = "«Италмас» – это трехзвездочная гостиница в Ижевске, сочетающая традиционное радушие, классическое оснащение, удобное месторасположение и качественное обслуживание. -Лучшее соотношение цены - качества по городу Ижевск. -Мы расположена всего в 1 км от жд вокзала. - У нас крупная транспортная развязка в любой конец города! - Самый близкий трансфер до аэропорта -30 мин. - Комфортные номера с новыми матрасами и обновленным ремонтом - Вкусные домашние завтраки, обеды и ужины. И это подтверждают ваши отзывы!! - У нас чисто, тепло и уютно как дома!! Забронировать номер в нашей гостинице вы можете: 1. По телефонам: +7 (922) 525-00-11, +7 (3412) 31-00-11 2. Написав на наш электронный адрес italmas.izh18@yandex.ru";
+const LONG_TE = "Откройте для себя новый уровень свободы в отеле “Театральная” Мы рады представить вам отель «Театральная» — современное пространство, созданное по новейшим технологиям и предлагающее уникальный опыт самостоятельного заселения.Мы находимся в самом центре города Ижевск, с видом на главные достопримечательности: Собор Александра Невского и Русский Драматический театр.В пешей доступности: Парк аттракционов им. Горького, городская набережная, Центральная площадь и улица с лучшими ресторанами города.";
+const ABOUT_SHORT = "Две гостиницы в Ижевске для разных поездок. «Театральная» стоит в историческом центре, рядом с драмтеатром, собором Александра Невского и набережной. «Италмас» в 15 минутах пешком от вокзала, его выбирают для деловых поездок. В обеих — новые кровати, современный ремонт и цены без переплаты за звёзды.";
+const ABOUT_LONG = "Два прекрасных отеля в Ижевске – выберите свой идеальный отдых! Мы рады представить вам две гостиницы — «Италмас» и «Театральная», каждая из которых предлагает уникальный опыт проживания и комфорт! Отель «Театральная» расположен в самом центре исторической части Ижевска! Отсюда рукой подать до главных достопримечательностей: величественного собора Александра Невского, знаменитого Русского драматического театра, живописной набережной и захватывающего парка аттракционов им. Горького. Погрузитесь в культурную жизнь города, остановившись в уютном и современном отеле! Отель «Италмас» идеально расположен для тех, кто ценит удобство транспортной доступности — всего в 15 минутах ходьбы от железнодорожного вокзала. Это прекрасный выбор для деловых поездок и путешествий, когда важна мобильность и близость к транспортным узлам. Отель Италмас создан с уклоном на удмуртский стиль, в холлах расположена выставка картин местных художников, каждый номер назван в честь городов и поселений Удмуртии.";
+
+const HOTELS = [
+  {id:"it", name:"Гостиница «Италмас»", longName:"Гостиница Италмас", city:"Ижевск", stars:3, addr:"ул. Гагарина, 5б", img:IMG.a, photos:24,
+   tags:["1 км от вокзала","Удмуртский стиль","Завтраки"], tagsLong:["1 км от вокзала","Удмуртский стиль","Завтраки, обеды и ужины","Трансфер в аэропорт","Хранение багажа","Прачечная"],
+   short:"Трёхзвёздочная гостиница в 15 минутах пешком от вокзала. Номера названы в честь городов Удмуртии, в холлах висят картины местных художников.", long:LONG_IT,
+   phone:"+7 (3412) 31-00-11", mail:"italmas.izh18@yandex.ru", price:"2 900", pos:[30,66]},
+  {id:"te", name:"Гостиница «Театральная»", longName:"Гостиница \"Театральная\"", city:"Ижевск", stars:0, addr:"ул. Горького, 68", img:IMG.b, photos:18,
+   tags:["Исторический центр","Заселение без ресепшена","Вид на собор"], tagsLong:["Исторический центр","Самостоятельное заселение","Вид на собор","Парк Горького рядом","Набережная"],
+   short:"Современный отель напротив Русского драмтеатра и собора Александра Невского. Заселение самостоятельное, без стойки администратора.", long:LONG_TE,
+   phone:"8 (999) 280-51-50", mail:"hotelteatr@mail.ru", price:"3 400", pos:[58,30]},
+  {id:"nb", name:"Апарт-отель «Набережная»", longName:"Апарт-отель «Набережная» на улице Максима Горького", city:"Ижевск", stars:0, addr:"ул. Свободы, 12", img:IMG.c, photos:12,
+   tags:["Кухня в номере","У пруда"], tagsLong:["Кухня в номере","У пруда","Парковка","Долгое проживание"],
+   short:"Апартаменты с кухней на берегу Ижевского пруда. Подходят для семейных поездок и долгого проживания.", long:"Апартаменты с кухней на берегу Ижевского пруда, в каждом номере есть всё для самостоятельного проживания: плита, холодильник, посуда, стиральная машина. Подходят для семейных поездок и долгого проживания, для гостей на неделю и дольше действуют специальные условия.",
+   phone:"+7 (3412) 00-00-01", mail:"nab@example.ru", price:"4 100", pos:[78,58]},
+  {id:"ka", name:"Отель «Кама»", longName:"Отель «Кама»", city:"Сарапул", stars:3, addr:"ул. Советская, 4", img:IMG.d, photos:9,
+   tags:["Вид на Каму","Ресторан"], tagsLong:["Вид на Каму","Ресторан","Конференц-зал"],
+   short:"Отель в старом купеческом центре Сарапула с видом на Каму.", long:"Отель в старом купеческом центре Сарапула с видом на Каму. Рядом пристань и краеведческий музей.",
+   phone:"+7 (34147) 0-00-02", mail:"kama@example.ru", price:"2 600", pos:[86,86]},
+  {id:"vo", name:"Гостевой дом «Чайковский»", longName:"Гостевой дом «Чайковский»", city:"Воткинск", stars:0, addr:"ул. Ленина, 20", img:IMG.a, photos:7,
+   tags:["Рядом с музеем-усадьбой"], tagsLong:["Рядом с музеем-усадьбой","Сад","Завтраки"],
+   short:"Небольшой гостевой дом в десяти минутах от музея-усадьбы П. И. Чайковского.", long:"Небольшой гостевой дом в десяти минутах от музея-усадьбы П. И. Чайковского. Восемь номеров, сад и домашние завтраки.",
+   phone:"+7 (34145) 0-00-03", mail:"dom@example.ru", price:"2 300", pos:[70,12]},
+  {id:"gl", name:"Мини-отель «Северный»", longName:"Мини-отель «Северный»", city:"Глазов", stars:0, addr:"ул. Кирова, 9", img:IMG.b, photos:6,
+   tags:["Парковка","Круглосуточно"], tagsLong:["Парковка","Круглосуточно","Для командировок"],
+   short:"Мини-отель для командировок в центре Глазова, с парковкой.", long:"Мини-отель для командировок в центре Глазова. Парковка, круглосуточная стойка, отчётные документы.",
+   phone:"+7 (34141) 0-00-04", mail:"sever@example.ru", price:"2 100", pos:[16,18]},
+];
+
+const S = {pal:"eg", custom:{...PAL.eg}, fh:"Open Sans", fb:"Open Sans", n:2, logo:"plaque", len:"short", vp:"d", city:"Все", sel:"it"};
+const $ = s => document.querySelector(s);
+const site = $("#site");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const word = n => n===2?"две гостиницы":n===3?"три отеля":n+" отелей";
+
+function applyColors(){
+  const p = S.pal==="custom" ? S.custom : PAL[S.pal];
+  for(const k in VAR) site.style.setProperty(VAR[k], p[k]);
+  document.querySelectorAll("#cols input").forEach(i => i.value = p[i.dataset.k].toLowerCase());
+}
+function applyFonts(){
+  site.style.setProperty("--f-head", `"${S.fh}"`);
+  site.style.setProperty("--f-body", `"${S.fb}"`);
+}
+function list(){ return HOTELS.slice(0, S.n); }
+function shown(){ const l = list(); return S.city==="Все" ? l : l.filter(h => h.city===S.city); }
+
+function renderHotels(){
+  const L = S.len==="long";
+  const all = list(), hs = shown();
+  const cities = [...new Set(all.map(h=>h.city))];
+  const f = $("#filters");
+  f.hidden = cities.length < 2;
+  f.innerHTML = ["Все",...cities].map(c => `<button type="button" class="chip" aria-pressed="${c===S.city}" data-c="${esc(c)}">${esc(c==="Все"?"Все города":c)}</button>`).join("");
+  $("#hotelsTitle").textContent = S.n===2 ? "Две гостиницы для разных поездок" : `${S.n} отелей в Удмуртии`;
+  const g = $("#grid");
+  g.dataset.n = hs.length;
+  g.innerHTML = hs.map(h => `
+    <article class="card">
+      <div class="card-media">
+        <img alt="${esc(h.name)}" src="${h.img}" loading="lazy">
+        <span class="card-city">${esc(h.city)}</span>
+        <span class="card-cnt"><svg class="ico" style="width:14px;height:14px"><use href="#i-photo"/></svg>${h.photos} фото</span>
+      </div>
+      <div class="card-body">
+        ${h.stars?`<div class="stars" aria-label="${h.stars} звезды">${"★".repeat(h.stars)}</div>`:""}
+        <h3>${esc(L?h.longName:h.name)}</h3>
+        <p class="addr"><svg class="ico"><use href="#i-pin"/></svg><span>${esc(h.city)}, ${esc(h.addr)}</span></p>
+        <ul class="tags">${(L?h.tagsLong:h.tags).map(t=>`<li>${esc(t)}</li>`).join("")}</ul>
+        <p class="desc">${esc(L?h.long:h.short)}</p>
+        <button class="more" type="button" hidden>Подробнее</button>
+        <div class="card-foot">
+          <div class="acts"><a class="btn btn-acc" href="#top" data-book="${h.id}">Узнать цену</a><a class="link" href="#s-hotels">Сайт отеля <svg class="ico" style="width:15px;height:15px"><use href="#i-arrow"/></svg></a></div>
+        </div>
+      </div>
+    </article>`).join("");
+  requestAnimationFrame(() => g.querySelectorAll(".card").forEach(c => {
+    const d = c.querySelector(".desc"), b = c.querySelector(".more");
+    b.hidden = d.scrollHeight <= d.clientHeight + 2;
+    b.onclick = () => { const o = d.classList.toggle("open"); b.textContent = o ? "Свернуть" : "Подробнее"; };
+  }));
+
+  const prevHotel = $("#sHotel").value;
+  $("#sHotel").innerHTML = all.map(h=>`<option value="${h.id}">${esc(h.name)}</option>`).join("");
+  $("#sHotel").value = all.some(h=>h.id===prevHotel) ? prevHotel : all[0].id;
+  $("#footHotels").innerHTML = all.map(h=>`<li><a href="#s-hotels">${esc(h.name)}</a></li>`).join("");
+  const kick = S.n===2 ? "Ижевск · 2 гостиницы" : `Удмуртия · ${S.n} отелей в ${cities.length} городах`;
+  $("#heroKicker").textContent = kick;
+  $("#heroTitle").textContent = S.n===2 ? "Гостиницы EG Hotels в Ижевске" : "Отели EG Hotels в Удмуртии";
+  if(!all.some(h=>h.id===S.sel)) S.sel = all[0].id;
+  renderMap();
+}
+function renderMap(){
+  const all = list();
+  $("#mlist").innerHTML = all.map((h,i)=>`
+    <li><button type="button" class="mitem" data-id="${h.id}" aria-current="${h.id===S.sel}">
+      <span class="num">${i+1}</span>
+      <b>${esc(h.name)}</b>
+      <span>${esc(h.city)}, ${esc(h.addr)}</span>
+      <span class="ph">${esc(h.phone)}</span>
+      <span>${esc(h.mail)}</span>
+    </button></li>`).join("");
+  $("#pins").innerHTML = all.map((h,i)=>`
+    <button type="button" class="pin ${h.id===S.sel?"on":""}" data-id="${h.id}" style="left:${h.pos[0]}%;top:${h.pos[1]+8}%" aria-label="${esc(h.name)}">
+      <i><span>${i+1}</span></i><em>${esc(h.name)}</em></button>`).join("");
+}
+function renderAbout(){
+  const t = $("#aboutTxt"), b = $("#aboutMore");
+  t.textContent = S.len==="long" ? ABOUT_LONG : ABOUT_SHORT;
+  t.classList.add("clamp"); b.textContent = "Читать полностью";
+  requestAnimationFrame(()=>{ b.hidden = t.scrollHeight <= t.clientHeight + 2; });
+}
+$("#aboutMore").onclick = e => { const o = $("#aboutTxt").classList.toggle("clamp"); e.target.textContent = o ? "Читать полностью" : "Свернуть"; };
+
+function seg(id, key, after){
+  const el = $(id);
+  el.addEventListener("click", e => {
+    const b = e.target.closest("button"); if(!b) return;
+    el.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x===b));
+    S[key] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v;
+    after();
+  });
+}
+seg("#cnt","n",()=>{ S.city="Все"; renderHotels(); });
+seg("#len","len",()=>{ renderHotels(); renderAbout(); });
+seg("#logo","logo",()=>{ $("#logoEl").className = "logo " + S.logo; });
+seg("#vp","vp",()=>{ $("#stage").classList.toggle("is-mobile", S.vp==="m"); setTimeout(()=>{renderHotels(); renderAbout();},320); });
+
+$("#filters").addEventListener("click", e => { const b = e.target.closest(".chip"); if(!b) return; S.city = b.dataset.c; renderHotels(); });
+document.addEventListener("click", e => {
+  const m = e.target.closest(".mitem,.pin"); if(m){ S.sel = m.dataset.id; renderMap(); }
+  const bk = e.target.closest("[data-book]");
+  if(bk){ e.preventDefault(); if(bk.dataset.book) $("#sHotel").value = bk.dataset.book; $("#top").scrollIntoView({behavior:"smooth"}); setTimeout(()=>$("#sHotel").focus({preventScroll:true}),500); }
+});
+$("#search").addEventListener("submit", e => { e.preventDefault(); const b = e.target.querySelector("button"); b.textContent = "Открываем модуль бронирования…"; setTimeout(()=>b.textContent="Найти номер",1600); });
+
+const fh = $("#fh"), fb = $("#fb");
+[fh,fb].forEach(s => s.innerHTML = FONTS.map(f=>`<option>${f}</option>`).join(""));
+fh.onchange = () => { S.fh = fh.value; applyFonts(); };
+fb.onchange = () => { S.fb = fb.value; applyFonts(); };
+$("#pal").onchange = e => { S.pal = e.target.value; if(S.pal==="custom") $("#colsBox").open = true; applyColors(); };
+$("#tok").onchange = e => site.classList.toggle("show-tokens", e.target.checked);
+
+$("#cols").innerHTML = COLS.map(([k,l]) => l===null ? `<h3>${k}</h3>` : `<label><input type="color" id="c-${k}" data-k="${k}"> ${l}</label>`).join("");
+$("#cols").addEventListener("input", e => {
+  const k = e.target.dataset.k; if(!k) return;
+  if(S.pal!=="custom"){ S.custom = {...PAL[S.pal]}; S.pal="custom"; $("#pal").value="custom"; }
+  S.custom[k] = e.target.value; applyColors();
+});
+
+$("#burger").onclick = () => { const o = $("#mnav").classList.toggle("open"); $("#burger").setAttribute("aria-expanded", o); };
+$("#mnav").addEventListener("click", e => { if(e.target.closest("a")) $("#mnav").classList.remove("open"); });
+
+// header: semi-transparent over hero, solid below it
+const hdr = $("#hdr");
+new IntersectionObserver(([en]) => hdr.classList.toggle("is-solid", !en.isIntersecting), {rootMargin:"-90px 0px 0px 0px"}).observe($("#heroTitle"));
+
+// hero slider
+const slides = [...document.querySelectorAll("#slides img")];
+let cur = 0;
+$("#dots").innerHTML = slides.map((_,i)=>`<button type="button" aria-label="Слайд ${i+1}" class="${i?"":"on"}"></button>`).join("");
+const dots = [...document.querySelectorAll("#dots button")];
+function go(i){ slides[cur].classList.remove("on"); dots[cur].classList.remove("on"); cur = i; slides[cur].classList.add("on"); dots[cur].classList.add("on"); }
+dots.forEach((d,i)=>d.onclick=()=>go(i));
+if(!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(()=>go((cur+1)%slides.length), 6000);
+
+// dates
+const d0 = new Date(), d1 = new Date(Date.now()+864e5), iso = d => d.toISOString().slice(0,10);
+$("#sIn").value = iso(d0); $("#sOut").value = iso(d1);
+$("#yr").textContent = d0.getFullYear();
+
+applyColors(); applyFonts(); renderHotels(); renderAbout();
+</script>
 </body>
-  <h1>Сайт работает!</h1>
-</html
+</html>
