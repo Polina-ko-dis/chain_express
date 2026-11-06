@@ -6,7 +6,7 @@
 <title>Главная сети EG Hotels</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&family=Playfair+Display:wght@500;700&family=Raleway:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Nunito+Sans:wght@500;600&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&family=Playfair+Display:wght@500;700&family=Raleway:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap">
 <style>
 /* Layout: prototype toolbar on top, then the template preview in a frame.
    Prototype chrome uses --ui-* tokens (theme-aware).
@@ -59,6 +59,8 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   --line: color-mix(in srgb, var(--t-main) 13%, var(--bg-main));
   --soft: color-mix(in srgb, var(--t-main) 4%, var(--bg-main));
   --decor-soft: color-mix(in srgb, var(--bg-decor) 16%, var(--bg-main));
+  /* buttons copy the TravelLine search form button: #ADCD16 (set in the widget oncomplete), white Nunito Sans 16/500 uppercase, 65px tall, square */
+  --btn-bg:#ADCD16; --btn-fg:#FFFFFF; --btn-font:"Nunito Sans", Arial, sans-serif; --btn-h:65px;
   --head: var(--f-head), "Open Sans", "PT Sans", Arial, sans-serif;
   --body: var(--f-body), "Open Sans", "PT Sans", Arial, sans-serif;
   container: site / inline-size;
@@ -70,8 +72,8 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .wrap{max-width:1200px; margin:0 auto; padding-inline:40px}
 .ico{width:18px; height:18px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
 
-.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:46px; padding:0 22px; border-radius:0; border:0; cursor:pointer; text-decoration:none; font-weight:600; font-size:15px; white-space:nowrap}
-.btn-acc,.site a.btn-acc{background:var(--bg-acc); color:var(--t-acc)}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:var(--btn-h); padding:0 32px; border-radius:0; border:0; cursor:pointer; text-decoration:none; font-family:var(--btn-font); font-weight:500; font-size:16px; line-height:22px; text-transform:uppercase; letter-spacing:normal; white-space:nowrap}
+.btn-acc,.site a.btn-acc{background:var(--btn-bg); color:var(--btn-fg)}
 .btn-acc:hover{filter:brightness(1.08)}
 .btn-ghost{background:transparent; color:inherit; border:1px solid currentColor}
 .link{display:inline-flex; align-items:center; gap:6px; font-weight:600; font-size:15px; text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:1px}
@@ -138,7 +140,8 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 /* slider control: arrows + counter + progress segments, bottom right of the hero */
 .hero-nav{flex:none; display:flex; gap:12px; color:var(--t-semi)}
 .hn-btn{width:52px; height:52px; border-radius:0; border:1px solid color-mix(in srgb,var(--t-semi) 55%,transparent); background:var(--semi); color:inherit; display:grid; place-items:center; cursor:pointer; transition:background .2s, border-color .2s}
-.hn-btn:hover{background:var(--bg-acc); border-color:var(--bg-acc); color:var(--t-acc)}
+.hero-nav .hn-btn{background:var(--btn-bg); border-color:var(--btn-bg); color:var(--btn-fg)}
+.hn-btn:hover{filter:brightness(1.08)}
 .hn-btn .ico{width:22px; height:22px}
 /* photo progress under the title: one short bar per photo, the current one fills while autoplay runs */
 .hero-dots{display:flex; gap:8px; margin-top:28px}
@@ -175,13 +178,14 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; overscroll-behavior-x:contain; scrollbar-width:none; padding-bottom:4px}
 .grid::-webkit-scrollbar{display:none}
 .grid>.card{scroll-snap-align:start}
-/* arrows sit on the card row, centred on the photos */
+/* arrows sit on the card row, centred on the cards, in the accent colour */
 .rail{position:relative}
 .rail-nav{position:absolute; left:0; right:0; top:var(--media-mid, 160px); height:0; pointer-events:none}
 .rn-btn{position:absolute; top:0; transform:translateY(-50%); pointer-events:auto; box-shadow:0 4px 16px rgb(0 0 0 / .18);
   width:52px; height:52px; border-radius:0; border:1px solid var(--line); background:var(--bg-main); color:var(--t-main); display:grid; place-items:center; cursor:pointer; transition:background .2s, color .2s, border-color .2s, opacity .2s}
 .rn-btn .ico{width:22px; height:22px}
-.rn-btn:hover:not(:disabled){background:var(--bg-acc); border-color:var(--bg-acc); color:var(--t-acc)}
+.rail .rn-btn{background:var(--btn-bg); border-color:var(--btn-bg); color:var(--btn-fg)}
+.rail .rn-btn:hover:not(:disabled){filter:brightness(1.08)}
 .rn-prev{left:-26px}
 .rn-next{right:-26px}
 .rn-btn:disabled{opacity:0; pointer-events:none}
@@ -205,12 +209,15 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .desc{margin:0; font-size:15px; color:color-mix(in srgb,var(--t-main) 82%,var(--bg-main)); display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden}
 .desc.open{-webkit-line-clamp:unset; display:block}
 .more{align-self:flex-start; background:none; border:0; padding:0; color:var(--t-main); font-weight:600; font-size:14px; cursor:pointer; text-decoration:underline; text-decoration-color:var(--bg-decor); text-underline-offset:4px; text-decoration-thickness:2px}
-.card-foot{margin-top:auto; padding-top:16px; border-top:1px solid var(--line)}
+.card-foot{margin-top:auto; padding-top:8px}
 .acts{display:flex; align-items:center; gap:18px; flex-wrap:wrap}
 
 /* about */
 /* about: only the constructor's description text. Heading left, text in a readable column right. */
-.about{display:grid; grid-template-columns:minmax(0,4fr) minmax(0,7fr); gap:56px; align-items:start; padding-block:56px; border-block:1px solid var(--line)}
+.about{display:grid; grid-template-columns:minmax(0,4fr) minmax(0,7fr); gap:56px; align-items:start}
+/* description band: full width, filled with the accent colour, text in "на акцентном фоне" */
+.sec.about-band{margin-top:96px; padding-block:88px; background:var(--bg-acc); color:var(--t-acc)}
+.about-band .more{color:inherit; text-decoration-color:color-mix(in srgb, currentColor 55%, transparent)}
 .about-head h2{font-size:clamp(28px,3.4cqi,40px); font-weight:700}
 .about-body{display:grid; gap:16px; justify-items:start; min-width:0}
 .about-txt{font-size:17px; line-height:1.7; max-width:68ch}
@@ -390,11 +397,12 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   .card h3,.grid .card h3{font-size:21px}
   .acts{width:100%; justify-content:space-between}
   .acts .btn{flex:1}
+  .btn{height:56px}
   .mapfull{height:auto}
   .mapfull .map{position:relative; inset:auto; height:360px}
   .map-ov{height:auto; display:block; padding-block:16px}
   .mlist{width:100%; max-height:none; background:var(--bg-main); backdrop-filter:none; box-shadow:none; border:1px solid var(--line)}
-  .about{padding-block:40px}
+  .sec.about-band{margin-top:64px; padding-block:56px}
   .about-txt{font-size:16px}
   .foot{margin-top:64px; padding-block:40px 90px}
   .foot-grid{grid-template-columns:1fr}
@@ -559,7 +567,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
     </div>
   </section>
 
-  <section class="sec" id="s-about">
+  <section class="sec about-band" id="s-about">
     <div class="wrap about">
       <div class="about-head">
         <h2>Гостиницы в Ижевске</h2>
@@ -756,8 +764,8 @@ function railUpdate(){
   $("#railNav").hidden = !scrollable;
   $("#railPrev").disabled = g.scrollLeft < 4;
   $("#railNext").disabled = g.scrollLeft + g.clientWidth > g.scrollWidth - 4;
-  const m = g.querySelector(".card-media");
-  if(m) $("#rail").style.setProperty("--media-mid", (m.offsetHeight/2) + "px");
+  const c = g.querySelector(".card");
+  if(c) $("#rail").style.setProperty("--media-mid", (c.offsetHeight/2) + "px");
 }
 
 function applyColors(){
@@ -800,7 +808,7 @@ function renderHotels(){
   requestAnimationFrame(() => g.querySelectorAll(".card").forEach(c => {
     const d = c.querySelector(".desc"), b = c.querySelector(".more");
     b.hidden = d.scrollHeight <= d.clientHeight + 2;
-    b.onclick = () => { const o = d.classList.toggle("open"); b.textContent = o ? "Свернуть" : "Подробнее"; };
+    b.onclick = () => { const o = d.classList.toggle("open"); b.textContent = o ? "Свернуть" : "Подробнее"; railUpdate(); };
   }));
 
   // size of the chain drives how lists are laid out: s = 2–4, m = 5–8, l = 9+
