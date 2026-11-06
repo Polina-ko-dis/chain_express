@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Главная сети EG Hotels</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600&family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&family=Playfair+Display:wght@500;700&family=Raleway:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap">
@@ -22,14 +21,13 @@
 :root[data-theme="dark"]{--ui-bg:#15181c; --ui-panel:#1f2328; --ui-fg:#e6e9ec; --ui-muted:#9aa4ae; --ui-line:#353b42; --ui-accent:#7ea6ff; color-scheme:dark}
 
 *,*::before,*::after{box-sizing:border-box}
-body{background:var(--ui-bg); color:var(--ui-fg); font-family:var(--ui-font);
-  padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); padding-block:0 40px}
+body{background:var(--ui-bg); color:var(--ui-fg); font-family:var(--ui-font); padding-block:0 40px; overflow-x:clip}
 body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:50; background:var(--ui-bg)}
 button,input,select{font:inherit}
 :focus-visible{outline:2px solid var(--ui-accent); outline-offset:2px}
 
 /* ---------- prototype toolbar ---------- */
-.tb{max-width:1280px; margin:16px auto 14px; background:var(--ui-panel); border:1px solid var(--ui-line); border-radius:10px; padding:14px 16px; display:grid; gap:12px}
+.tb{width:min(1280px, calc(100% - 32px)); margin:16px auto 14px; background:var(--ui-panel); border:1px solid var(--ui-line); border-radius:10px; padding:14px 16px; display:grid; gap:12px}
 .tb-top{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 16px}
 .tb-top h1{margin:0; font-size:17px; font-weight:700}
 .tb-top p{margin:0; color:var(--ui-muted); font-size:13px}
@@ -50,8 +48,8 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .cols-grid input[type=color]{width:34px; height:26px; padding:0; border:1px solid var(--ui-line); border-radius:4px; background:none}
 
 /* ---------- stage ---------- */
-.stage{max-width:1280px; margin:0 auto}
-.stage.is-mobile .site{max-width:390px}
+.stage{width:100%}
+.stage.is-mobile .site{max-width:390px; border-radius:10px; box-shadow:0 1px 3px rgb(0 0 0 / .12), 0 12px 40px rgb(0 0 0 / .10)}
 .site{
   --bg-main:#F5F5F3; --bg-extra:#161616; --bg-semi:#000; --bg-acc:#4E9F3D; --bg-decor:#74C677;
   --t-main:#000; --t-extra:#fff; --t-semi:#fff; --t-acc:#fff; --logo-bg:#fff;
@@ -65,8 +63,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   --body: var(--f-body), "Open Sans", "PT Sans", Arial, sans-serif;
   container: site / inline-size;
   margin:0 auto; background:var(--bg-main); color:var(--t-main); font-family:var(--body); font-size:16px; line-height:1.55;
-  border-radius:10px; overflow:clip; box-shadow:0 1px 3px rgb(0 0 0 / .12), 0 12px 40px rgb(0 0 0 / .10);
-  transition:max-width .3s ease;
+  overflow:clip; transition:max-width .3s ease;
 }
 .site h1,.site h2,.site h3{font-family:var(--head); text-wrap:balance; margin:0; line-height:1.18}
 .site a{color:inherit}
@@ -264,7 +261,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .show-tokens [data-token]::after{content:attr(data-token); position:absolute; left:6px; top:6px; z-index:30; background:var(--tok); color:#fff; font:600 11px/1.3 var(--ui-font); padding:3px 7px; border-radius:3px; pointer-events:none; white-space:nowrap; max-width:calc(100% - 12px); overflow:hidden; text-overflow:ellipsis}
 .show-tokens .hdr[data-token]::after{top:auto; bottom:-22px}
 
-.legend{max-width:1280px; margin:14px auto 0; font-size:13px; color:var(--ui-muted)}
+.legend{width:min(1280px, calc(100% - 32px)); margin:14px auto 0; font-size:13px; color:var(--ui-muted)}
 
 @media (prefers-reduced-motion: reduce){*{transition:none !important; animation:none !important}}
 </style>
