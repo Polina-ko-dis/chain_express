@@ -101,13 +101,12 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .dd{position:absolute; left:-18px; top:100%; padding-top:14px; display:none; z-index:30}
 .nav-dd.open .dd{display:block}
 @media (hover:hover){.nav-dd:hover .dd{display:block} .nav-dd:hover .nav-dd-btn .ico{transform:rotate(180deg)}}
-.dd-in{width:360px; background:var(--bg-main); color:var(--t-main); border-radius:6px; box-shadow:0 12px 36px rgb(0 0 0 / .2); padding:8px; display:grid}
-.dd-item{display:grid; grid-template-columns:52px 1fr auto; align-items:center; gap:2px 14px; padding:10px; border-radius:4px; text-decoration:none}
+.dd-in{width:320px; background:var(--bg-main); color:var(--t-main); border-radius:6px; box-shadow:0 12px 36px rgb(0 0 0 / .2); padding:8px; display:grid}
+.dd-item{display:grid; grid-template-columns:1fr auto; align-items:center; gap:2px 14px; padding:10px 12px; border-radius:4px; text-decoration:none}
 .dd-item:hover,.dd-item:focus-visible{background:var(--decor-soft); outline:none}
-.dd-item img{grid-row:span 2; width:52px; height:52px; object-fit:cover; border-radius:4px}
 .dd-item b{font-family:var(--head); font-size:15px}
 .dd-item span{font-size:13px; color:var(--muted)}
-.dd-item .ico{grid-row:1/3; grid-column:3; width:16px; height:16px; color:var(--muted)}
+.dd-item .ico{grid-row:1/3; grid-column:2; width:16px; height:16px; color:var(--muted)}
 .dd-item:hover .ico{color:var(--t-main)}
 .mnav-cap{padding:14px 0 4px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
 .mnav-hotels{display:grid; border-bottom:1px solid var(--line); padding-bottom:6px}
@@ -119,18 +118,19 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .mnav{display:none}
 
 /* hero */
-.hero{position:relative; min-height:620px; display:flex; align-items:flex-end; color:var(--t-semi); background:var(--bg-semi)}
+/* first screen = full viewport height; the search form sits at its bottom edge, always in view */
+.hero{position:relative; height:100vh; height:100svh; min-height:480px; display:flex; flex-direction:column; justify-content:flex-end; color:var(--t-semi); background:var(--bg-semi)}
 .hero-slides img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.2s ease}
 .hero-slides img.on{opacity:1}
 .hero-shade{position:absolute; inset:0; background:linear-gradient(to top, color-mix(in srgb,var(--bg-semi) 78%,transparent) 0%, color-mix(in srgb,var(--bg-semi) 30%,transparent) 55%, color-mix(in srgb,var(--bg-semi) 45%,transparent) 100%)}
-.hero-in{position:relative; width:100%; padding-block:0 120px}
+.hero-in{position:relative; width:100%; padding-block:96px 36px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px}
+.hero-text{min-width:0}
 .hero-kicker{margin:0 0 14px; font-size:13px; letter-spacing:.14em; text-transform:uppercase; display:flex; align-items:center; gap:10px}
 .hero-kicker::before{content:""; width:28px; height:2px; background:var(--bg-decor)}
 .hero h1{font-size:clamp(34px, 5.2cqi, 60px); font-weight:700; max-width:16ch}
 .hero-sub{margin:16px 0 0; font-size:19px; max-width:46ch; opacity:.92}
 /* slider control: arrows + counter + progress segments, bottom right of the hero */
-.hero-navwrap{position:absolute; left:0; right:0; bottom:120px; pointer-events:none}
-.hero-nav{pointer-events:auto; margin-left:auto; width:max-content; display:flex; gap:12px; color:var(--t-semi)}
+.hero-nav{flex:none; display:flex; gap:12px; color:var(--t-semi)}
 .hn-btn{width:52px; height:52px; border-radius:50%; border:1px solid color-mix(in srgb,var(--t-semi) 55%,transparent); background:var(--semi); color:inherit; display:grid; place-items:center; cursor:pointer; transition:background .2s, border-color .2s}
 .hn-btn:hover{background:var(--bg-acc); border-color:var(--bg-acc); color:var(--t-acc)}
 .hn-btn .ico{width:22px; height:22px}
@@ -145,7 +145,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 @keyframes hn-fill{to{width:100%}}
 
 /* search */
-.search-wrap{position:relative; z-index:5; margin-top:-64px}
+.search-wrap{position:relative; z-index:5; width:100%; padding-block:0 40px}
 .search{position:relative; background:var(--bg-main); color:var(--t-main); border-radius:6px; box-shadow:0 10px 40px rgb(0 0 0 / .16); padding:18px; display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr auto; gap:0; align-items:stretch}
 .fld{display:grid; gap:2px; padding:8px 18px; border-right:1px solid var(--line); min-width:0}
 .fld:nth-last-child(2){border-right:0}
@@ -275,13 +275,15 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   .logo.plaque img{width:42px; height:42px}
   .logo .wm{height:32px}
   .hdr-call{display:grid !important}
-  .hero{min-height:520px}
-  .hero-in{padding-block:0 160px}
   .hero{min-height:560px}
+  .hero-in{padding-block:80px 24px; align-items:flex-end}
+  .hero h1{font-size:30px}
+  .hero-kicker{font-size:12px; letter-spacing:.1em}
+  .mbar.is-off{visibility:hidden}
+  .hero-dots{margin-top:18px}
   .hero-sub{font-size:16px}
-  .hero-navwrap{bottom:84px}
   .hn-btn{width:40px; height:40px}
-  .search-wrap{margin-top:-52px}
+  .search-wrap{padding-block:0 16px}
   .search{grid-template-columns:1fr 1fr}
   .fld:first-child{grid-column:1/-1}
   .fld:nth-child(4){grid-column:1/-1}
@@ -407,19 +409,17 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
     </div>
     <div class="hero-shade"></div>
     <div class="wrap hero-in">
-      <p class="hero-kicker" id="heroKicker">Ижевск · 2 гостиницы</p>
-      <h1 id="heroTitle">Гостиницы EG Hotels в Ижевске</h1>
-      <div class="hero-dots auto" id="dots" role="group" aria-label="Фотографии"></div>
-    </div>
-    <div class="wrap hero-navwrap">
+      <div class="hero-text">
+        <p class="hero-kicker" id="heroKicker">Ижевск · 2 гостиницы</p>
+        <h1 id="heroTitle">Гостиницы EG Hotels в Ижевске</h1>
+        <div class="hero-dots auto" id="dots" role="group" aria-label="Фотографии"></div>
+      </div>
       <div class="hero-nav" role="group" aria-label="Фотографии">
         <button class="hn-btn" id="hnPrev" type="button" aria-label="Предыдущее фото"><svg class="ico"><use href="#i-left"/></svg></button>
         <button class="hn-btn" id="hnNext" type="button" aria-label="Следующее фото"><svg class="ico"><use href="#i-right"/></svg></button>
       </div>
     </div>
-  </section>
-
-  <div class="wrap search-wrap">
+    <div class="wrap search-wrap">
     <form class="search" id="search" data-token="Форма поиска: основной фон · кнопка «форма поиска и кнопки»">
       <div class="fld"><label for="sHotel">Отель</label><select id="sHotel"></select></div>
       <div class="fld"><label for="sIn">Заезд</label><input id="sIn" type="date"></div>
@@ -427,7 +427,8 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
       <div class="fld"><label for="sGuests">Гости</label><select id="sGuests"><option>1 взрослый</option><option selected>2 взрослых</option><option>2 взрослых, 1 ребёнок</option><option>3 взрослых</option></select></div>
       <button class="btn btn-acc" type="submit">Найти номер</button>
     </form>
-  </div>
+    </div>
+  </section>
 
   <section class="sec" id="s-hotels">
     <div class="wrap">
@@ -646,7 +647,7 @@ function renderHotels(){
   $("#sHotel").value = all.some(h=>h.id===prevHotel) ? prevHotel : all[0].id;
   $("#footHotels").innerHTML = all.map(h=>`<li><a href="${h.url}" target="_blank" rel="noopener">${esc(h.name)}</a></li>`).join("");
   const arr = `<svg class="ico"><use href="#i-arrow"/></svg>`;
-  $("#ddList").innerHTML = all.map(h=>`<a class="dd-item" href="${h.url}" target="_blank" rel="noopener"><img src="${h.img}" alt=""><b>${esc(h.name)}</b><span>${esc(h.city)}, ${esc(h.addr)}</span>${arr}</a>`).join("");
+  $("#ddList").innerHTML = all.map(h=>`<a class="dd-item" href="${h.url}" target="_blank" rel="noopener"><b>${esc(h.name)}</b><span>${esc(h.city)}, ${esc(h.addr)}</span>${arr}</a>`).join("");
   $("#mnavHotels").innerHTML = all.map(h=>`<a href="${h.url}" target="_blank" rel="noopener">${esc(h.name)} ${arr}</a>`).join("");
   $("#heroKicker").textContent = one ? `Ижевск · ${S.n} ${plural(S.n,"гостиница","гостиницы","гостиниц")}` : `Удмуртия · ${S.n} отелей в ${cities.length} городах`;
   $("#heroTitle").textContent = one ? "Гостиницы EG Hotels в Ижевске" : "Отели EG Hotels в Удмуртии";
@@ -728,6 +729,9 @@ $("#mnav").addEventListener("click", e => { if(e.target.closest("a")) $("#mnav")
 // header: semi-transparent over hero, solid below it
 const hdr = $("#hdr");
 new IntersectionObserver(([en]) => hdr.classList.toggle("is-solid", !en.isIntersecting), {rootMargin:"-90px 0px 0px 0px"}).observe($("#heroTitle"));
+
+// phone booking bar: hidden while the search form itself is on screen
+new IntersectionObserver(([en]) => document.querySelector(".mbar").classList.toggle("is-off", en.isIntersecting)).observe($("#search"));
 
 // hero slider
 const slides = [...document.querySelectorAll("#slides img")];
