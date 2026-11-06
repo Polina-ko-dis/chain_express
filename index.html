@@ -218,10 +218,58 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .about-txt p+p{margin-top:14px}
 .about-txt.clamp{max-height:calc(1.7em * 7); overflow:hidden; -webkit-mask-image:linear-gradient(#000 60%, transparent); mask-image:linear-gradient(#000 60%, transparent)}
 
+/* special offers: one wide card per view (photo 1/3 left, text right), swipe/arrows + progress bars below.
+   Offers come from TravelLine for every hotel of the chain; any number. */
+.off-sc{display:grid; grid-auto-flow:column; grid-auto-columns:100%; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; overscroll-behavior-x:contain; scrollbar-width:none}
+.off-sc::-webkit-scrollbar{display:none}
+.off-card{scroll-snap-align:start; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:40px; align-items:start; padding:24px; background:var(--bg-main); border:1px solid var(--line); min-width:0}
+.off-media{aspect-ratio:4/3; overflow:hidden; background:var(--soft)}
+.off-card.no-media{grid-template-columns:minmax(0,1fr); padding:32px 40px}
+.off-card.no-media .off-desc{max-width:80ch}
+.off-media img{width:100%; height:100%; object-fit:cover; display:block}
+.off-body{display:flex; flex-direction:column; align-items:flex-start; gap:12px; min-width:0; padding-block:4px}
+.off-hotel{margin:0; display:flex; align-items:center; gap:8px; font-size:14px; color:var(--muted)}
+.off-hotel::before{content:""; width:14px; height:2px; background:var(--bg-decor); flex:none}
+.off-card h3{font-size:20px; font-weight:700; text-transform:uppercase; letter-spacing:.02em}
+.off-desc{font-size:15px; color:color-mix(in srgb,var(--t-main) 82%,var(--bg-main)); max-height:calc(1.55em * 6); overflow:hidden}
+.off-desc.open{max-height:none}
+.off-desc p{margin:0}
+.off-desc ul{margin:4px 0 0; padding-left:20px}
+.off-card .btn{margin-top:8px}
+.off-dots{display:flex; justify-content:center; gap:8px; margin-top:24px}
+.off-dots button{position:relative; width:40px; height:16px; padding:0; border:0; background:none; cursor:pointer}
+.off-dots button::before{content:""; position:absolute; left:0; right:0; top:6px; height:4px; background:var(--line)}
+.off-dots button[aria-current="true"]::before{background:var(--bg-decor)}
+@container site (max-width: 1000px){
+  .off-card{gap:28px; padding:20px}
+}
+@container site (max-width: 620px){
+  .off-sc{gap:12px}
+  .off-card{grid-template-columns:1fr; gap:16px; padding:0 0 18px}
+  .off-media{aspect-ratio:16/10}
+  .off-body{padding-inline:18px}
+  .off-card.no-media{padding:18px 0}
+  .off-card h3{font-size:18px}
+  .off-card .btn{width:100%}
+  .off-dots{margin-top:18px}
+}
+
 /* services: photo tiles, 1–8 items chosen by the hotel.
-   Desktop: rows of 3, every tile is 1/3 wide; an incomplete last row starts at the left. */
-.svc{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px}
-.svc-tile{position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--soft); margin:0}
+   Desktop rows: 1 = one wide card (title 1/3 left, photo 2/3 right); otherwise rows of 3,
+   and a remainder becomes rows of 2: 4 = 2+2, 5 = 3+2, 7 = 3+2+2, 8 = 3+3+2.
+   6-column grid: a third spans 2, a half (.w3) spans 3. */
+.svc{display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:16px}
+.svc-tile{position:relative; grid-column:span 2; aspect-ratio:4/3; overflow:hidden; background:var(--soft); margin:0}
+.svc-tile.w3{grid-column:span 3; aspect-ratio:16/9}
+/* one service: text column 1/3 + photo 2/3 */
+.svc-tile.wide{grid-column:1 / -1; aspect-ratio:auto; overflow:visible; background:none; display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); gap:16px; align-items:start}
+.svc-tile.wide img{position:static; grid-column:2; grid-row:1; aspect-ratio:16/9; height:auto}
+.svc-tile.wide::after{content:none}
+.svc-tile.wide .svc-cap{position:static; grid-column:1; grid-row:1; padding:0; gap:10px; color:var(--t-main)}
+.svc-tile.wide .svc-cap b{font-size:clamp(24px, 2.6cqi, 32px)}
+.svc-tile.wide .svc-cap span{color:var(--muted); opacity:1; font-size:15px}
+.svc-cap .svc-link{justify-self:start; margin-top:6px; color:var(--t-main); text-decoration:underline; text-decoration-color:var(--bg-decor); text-underline-offset:4px; text-decoration-thickness:2px}
+.svc-tile.wide:hover img{transform:none}
 .svc-tile img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease}
 .svc-tile:hover img{transform:scale(1.04)}
 .svc-tile::after{content:""; position:absolute; inset:0; background:linear-gradient(to top, var(--semi) 0%, color-mix(in srgb, var(--bg-semi) 18%, transparent) 45%, transparent 70%); pointer-events:none}
@@ -230,15 +278,20 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .svc-cap span{display:flex; align-items:center; gap:6px; font-size:14px; opacity:.9}
 .svc-cap span::before{content:""; width:14px; height:2px; background:var(--bg-decor); flex:none}
 /* more than 2 rows → the rest hides behind "Показать ещё" */
-.svc:not(.open) .svc-tile:nth-child(n+7){display:none}
+.svc:not(.open) .svc-tile.svc-x{display:none}
 .svc-more{margin-top:24px}
 @container site (max-width: 1000px){
   .svc{grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+  .svc-tile,.svc-tile.w3{grid-column:span 1; aspect-ratio:4/3}
+  .svc:not(.open) .svc-tile.svc-x{display:block}
   .svc:not(.open) .svc-tile:nth-child(n+5){display:none}
 }
 @container site (max-width: 620px){
   .svc{gap:10px}
-  .svc-tile{aspect-ratio:1/1}
+  .svc-tile,.svc-tile.w3{aspect-ratio:1/1}
+  .svc-tile.wide{grid-template-columns:1fr; gap:12px}
+  .svc-tile.wide img{grid-column:1; grid-row:1}
+  .svc-tile.wide .svc-cap{grid-column:1; grid-row:2}
   .svc-cap{padding:12px 12px 14px}
   .svc-cap b{font-size:16px}
   .svc-cap span{font-size:12px}
@@ -518,12 +571,34 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
     </div>
   </section>
 
+  <section class="sec" id="s-offers">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <h2>Спецпредложения</h2>
+        </div>
+        <label class="city-sel" id="offFilter" hidden>
+          <span class="vh">Гостиница</span>
+          <select id="offSel"></select>
+          <svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>
+        </label>
+      </div>
+      <div class="rail" id="offRail">
+        <div class="off-sc" id="offSc" tabindex="-1"></div>
+        <div class="rail-nav" id="offNav" role="group" aria-label="Листать спецпредложения">
+          <button class="rn-btn rn-prev" id="offPrev" type="button" aria-label="Предыдущее предложение"><svg class="ico"><use href="#i-left"/></svg></button>
+          <button class="rn-btn rn-next" id="offNext" type="button" aria-label="Следующее предложение"><svg class="ico"><use href="#i-right"/></svg></button>
+        </div>
+      </div>
+      <div class="off-dots" id="offDots" role="group" aria-label="Спецпредложения"></div>
+    </div>
+  </section>
+
   <section class="sec" id="s-services">
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <p class="eyebrow">Услуги</p>
-          <h2>Всё для удобного отдыха</h2>
+          <h2>Услуги</h2>
         </div>
       </div>
       <div class="svc" id="svc" data-token="Плитка услуг: подпись на полупрозрачном"></div>
@@ -595,6 +670,11 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
     <select id="devHotels"><option value="3">2–4</option><option value="6">5–8</option><option value="12">9 и больше</option></select>
     <svg class="devp-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
   </label>
+  <label class="devp-pill" for="devOffers">
+    <span class="devp-k">Спецпредложения</span>
+    <select id="devOffers"><option value="1">1</option><option value="1-noimg">1 без фото</option><option value="2">2</option><option value="3" selected>3</option><option value="5">5</option><option value="10">10</option></select>
+    <svg class="devp-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </label>
   <label class="devp-pill" for="devServices">
     <span class="devp-k">Услуги</span>
     <select id="devServices"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option><option value="7">7</option><option value="8">8</option></select>
@@ -662,7 +742,7 @@ const HOTELS = [
      full:`Удмуртская Республика, г. ${city}, ${addr}`, phone:`+7 (3412) 00-00-${String(k+10).padStart(2,"0")}`, mail:`${id}@example.ru`, url:"https://example.com/", pos})),
 ];
 
-const S = {pal:"eg", custom:{...PAL.eg}, fh:"Open Sans", fb:"Open Sans", n:3, svc:6, logo:"plaque", len:"short", vp:"d", city:"Все", sel:"it"};
+const S = {pal:"eg", custom:{...PAL.eg}, fh:"Open Sans", fb:"Open Sans", n:3, svc:6, off:3, offHotel:"all", logo:"plaque", len:"short", vp:"d", city:"Все", sel:"it"};
 const $ = s => document.querySelector(s);
 const site = $("#site");
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -771,6 +851,78 @@ function renderAbout(){
   t.classList.add("clamp"); b.textContent = "Читать полностью";
   requestAnimationFrame(()=>{ b.hidden = t.scrollHeight <= t.clientHeight + 2; });
 }
+// Special offers: come from TravelLine for each hotel of the chain, any number.
+// Demo: offer templates are dealt round-robin over the hotels currently in the chain.
+const OFFER_T = [
+  {t:"Тариф с завтраком", img:"img/services/breakfast.jpg", d:"<p>Завтрак «шведский стол» включён в стоимость проживания. Подаём с 7:00 до 11:00, по выходным до 12:00.</p><ul><li>горячие блюда и выпечка каждый день</li><li>детское меню</li><li>завтрак с собой при раннем выезде</li></ul>"},
+  {t:"Раннее бронирование −15%", img:IMG.a, d:"<p>Забронируйте номер за 30 дней до заезда и получите скидку 15% на проживание.</p><ul><li>скидка действует на все категории номеров</li><li>бесплатная отмена за 14 дней</li></ul>"},
+  {t:"Длительное проживание", img:IMG.b, d:"<p>При проживании от 7 ночей — скидка 10%, от 14 ночей — 20%.</p><ul><li>уборка номера каждые 3 дня</li><li>бесплатная стирка раз в неделю</li><li>скидка 10% в ресторане</li></ul>"},
+  {t:"День рождения в отеле", img:"img/services/spa.jpg", d:"<p>Специальный тариф для именинников: действует, если дата заезда за 7 дней до дня рождения или в течение 7 дней после него. Если день рождения выпадает на время проживания, мы будем рады предложить помимо основных услуг:</p><ul><li>вкусный комплимент от отеля</li><li>процедуру в спа для именинника</li><li>скидку на услуги проживания 15%</li><li>скидку 5% в ресторане в день рождения</li></ul><p>Если день рождения не приходится на даты проживания, предоставляется только скидка на проживание.</p>"},
+  {t:"Полупансион", img:"img/services/restaurant.jpg", d:"<p>Завтраки и ужины в ресторане отеля включены в стоимость. Ужин — из трёх блюд на выбор шеф-повара.</p>"},
+  {t:"Выходные в городе", img:IMG.c, d:"<p>Заезд в пятницу, выезд в воскресенье в 16:00 — поздний выезд без доплаты.</p><ul><li>завтраки включены</li><li>карта прогулок по городу от администратора</li></ul>"},
+  {t:"Командировочный тариф", img:"img/services/conference.jpg", d:"<p>Для гостей в деловой поездке: закрывающие документы для бухгалтерии, ранний завтрак с 6:30 и трансфер до вокзала.</p>"},
+  {t:"Семейный отдых", img:IMG.d, d:"<p>Дети до 7 лет проживают бесплатно, детская кроватка и стульчик в ресторане — по запросу.</p><ul><li>скидка 10% на второй номер</li><li>детское меню на завтраке</li></ul>"},
+  {t:"Поздний выезд в подарок", img:"img/services/sauna.jpg", d:"<p>При бронировании от 3 ночей на официальном сайте — выезд до 16:00 без доплаты.</p>"},
+  {t:"Романтический уикенд", img:"img/services/spa.jpg", d:"<p>Номер с большой кроватью, бутылка игристого и фрукты по приезде, завтрак в номер.</p>"},
+];
+function offers(){
+  const hs = list();
+  return Array.from({length:S.off}, (_,i) => ({...OFFER_T[i % OFFER_T.length], ...(S.offNoImg ? {img:null} : {}), h: hs[i % hs.length], id: 300000 + i}));
+}
+function renderOffers(){
+  const all = offers();
+  const hotelsWith = [...new Map(all.map(o => [o.h.id, o.h])).values()];
+  if(S.offHotel!=="all" && !hotelsWith.some(h=>h.id===S.offHotel)) S.offHotel = "all";
+  $("#offFilter").hidden = hotelsWith.length < 2;
+  $("#offSel").innerHTML = `<option value="all">Все гостиницы</option>` + hotelsWith.map(h=>`<option value="${h.id}"${h.id===S.offHotel?" selected":""}>${esc(h.name)}</option>`).join("");
+  const os = S.offHotel==="all" ? all : all.filter(o => o.h.id===S.offHotel);
+  const sc = $("#offSc");
+  sc.innerHTML = os.map(o => `
+    <article class="off-card${o.img ? "" : " no-media"}">
+      ${o.img ? `<div class="off-media"><img src="${o.img}" alt="" loading="lazy"></div>` : ""}
+      <div class="off-body">
+        <p class="off-hotel">${esc(o.h.name)}</p>
+        <h3>${esc(o.t)}</h3>
+        <div class="off-desc">${o.d}</div>
+        <button class="more" type="button" hidden>Подробнее</button>
+        <a class="btn btn-acc" href="${o.h.url}booking/?special-offer=${o.id}" target="_blank" rel="noopener">Забронировать по акции</a>
+      </div>
+    </article>`).join("");
+  $("#offDots").innerHTML = os.length > 1 ? os.map((o,i)=>`<button type="button" aria-label="${esc(o.t)}" aria-current="${i===0}"></button>`).join("") : "";
+  sc.scrollLeft = 0;
+  requestAnimationFrame(() => {
+    sc.querySelectorAll(".off-card").forEach(c => {
+      const d = c.querySelector(".off-desc"), b = c.querySelector(".more");
+      b.onclick = () => { const o = d.classList.toggle("open"); b.textContent = o ? "Свернуть" : "Подробнее"; };
+    });
+    offMoreCheck();
+    offUpdate();
+  });
+}
+// «Подробнее» only when the description is actually clipped; re-checked on resize (line count depends on width)
+function offMoreCheck(){
+  $("#offSc").querySelectorAll(".off-card").forEach(c => {
+    const d = c.querySelector(".off-desc"), b = c.querySelector(".more");
+    if(!d.classList.contains("open")) b.hidden = d.scrollHeight <= d.clientHeight + 2;
+  });
+}
+function offStep(){ const sc=$("#offSc"); return sc.clientWidth + parseFloat(getComputedStyle(sc).columnGap||0); }
+function offUpdate(){
+  const sc = $("#offSc"), n = sc.children.length, i = Math.round(sc.scrollLeft / offStep());
+  $("#offNav").hidden = n < 2;
+  $("#offPrev").disabled = i <= 0;
+  $("#offNext").disabled = i >= n - 1;
+  $("#offDots").querySelectorAll("button").forEach((b,k) => b.setAttribute("aria-current", k===i));
+  const m = sc.querySelector(".off-media");
+  if(m) $("#offRail").style.setProperty("--media-mid", (m.offsetTop + m.offsetHeight/2) + "px");
+}
+$("#offPrev").onclick = () => $("#offSc").scrollBy({left:-offStep()});
+$("#offNext").onclick = () => $("#offSc").scrollBy({left: offStep()});
+$("#offSc").addEventListener("scroll", () => requestAnimationFrame(offUpdate), {passive:true});
+$("#offDots").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; const k = [...b.parentNode.children].indexOf(b); $("#offSc").scrollTo({left: k * offStep()}); });
+$("#offSel").addEventListener("change", e => { S.offHotel = e.target.value; renderOffers(); });
+addEventListener("resize", () => requestAnimationFrame(() => { offMoreCheck(); offUpdate(); }));
+
 // Services: the hotel picks 1–8 in the constructor. Each tile = photo + service name + where it is available.
 const SERVICES = [
   {name:"Ресторан удмуртской кухни", img:"img/services/restaurant.jpg", hotels:["it"]},
@@ -786,17 +938,29 @@ function svcWhere(ids){
   if(ids.length > 1) return `В ${ids.length} ${plural(ids.length,"отеле","отелях","отелях")}`;
   const h = HOTELS.find(x => x.id===ids[0]); return h ? h.name : "";
 }
+// desktop rows: 1 → [1 wide]; else rows of 3 with a remainder turned into rows of 2
+function svcRows(n){
+  if(n === 1) return [1];
+  const r = Array(Math.floor(n/3)).fill(3), rem = n % 3;
+  if(rem === 2) r.push(2);
+  if(rem === 1){ r.pop(); r.push(2, 2); }
+  return r;
+}
 function renderServices(){
+  const items = SERVICES.slice(0, S.svc), rows = svcRows(items.length);
+  const cls = [];                      // per tile: width class + hidden-after-2-rows flag
+  rows.forEach((k, ri) => { for(let j=0;j<k;j++) cls.push(["svc-tile", k===1?"wide":k===2?"w3":"", ri>=2?"svc-x":""].filter(Boolean).join(" ")); });
   $("#svc").classList.remove("open");
-  $("#svc").innerHTML = SERVICES.slice(0, S.svc).map(s => {
-    return `<figure class="svc-tile"><img src="${s.img}" alt="" loading="lazy"><figcaption class="svc-cap"><b>${esc(s.name)}</b><span>${esc(svcWhere(s.hotels))}</span></figcaption></figure>`;
+  $("#svc").innerHTML = items.map((s,i) => {
+    return `<figure class="${cls[i]}"><img src="${s.img}" alt="" loading="lazy"><figcaption class="svc-cap"><b>${esc(s.name)}</b><span>${esc(svcWhere(s.hotels))}</span>${rows[0]===1 ? `<a class="more svc-link" href="${(HOTELS.find(h=>h.id===s.hotels[0])||HOTELS[0]).url}" target="_blank" rel="noopener">Подробнее</a>` : ""}</figcaption></figure>`;
   }).join("");
   svcMoreUpdate();
 }
-// visible = 2 rows of the current grid (desktop 3 cols → 6, tablet/phone 2 cols → 4)
+// visible = 2 rows: desktop counts the rows from svcRows, tablet/phone (2 cols) → 4 tiles
 function svcMoreUpdate(){
   const g = $("#svc"), b = $("#svcMore"), n = g.children.length;
-  const cols = getComputedStyle(g).gridTemplateColumns.split(" ").length, limit = cols * 2;
+  const cols = getComputedStyle(g).gridTemplateColumns.split(" ").length;
+  const limit = cols === 6 ? n - g.querySelectorAll(".svc-x").length : cols * 2;
   const open = g.classList.contains("open");
   b.hidden = n <= limit;
   b.textContent = open ? "Свернуть" : "Показать ещё";
@@ -893,9 +1057,10 @@ $("#yr").textContent = d0.getFullYear();
 const DEV_KEY = "eg-dev-hotels";
 try { const v = localStorage.getItem(DEV_KEY); if(v && ["3","6","12"].includes(v)) { S.n = +v; } } catch(e) {}
 $("#devHotels").value = String(S.n);
-$("#devHotels").onchange = e => { S.n = +e.target.value; S.city = "Все"; try { localStorage.setItem(DEV_KEY, e.target.value); } catch(_) {} renderHotels(); };
+$("#devHotels").onchange = e => { S.n = +e.target.value; S.city = "Все"; try { localStorage.setItem(DEV_KEY, e.target.value); } catch(_) {} renderHotels(); renderOffers(); };
 
-applyColors(); applyFonts(); renderHotels(); renderAbout(); renderServices();
+applyColors(); applyFonts(); renderHotels(); renderAbout(); renderOffers(); renderServices();
+$("#devOffers").onchange = e => { const v = e.target.value; S.offNoImg = v==="1-noimg"; S.off = parseInt(v,10); renderOffers(); };
 $("#devServices").onchange = e => { S.svc = +e.target.value; renderServices(); };
 </script>
 
