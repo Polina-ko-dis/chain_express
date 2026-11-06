@@ -218,6 +218,34 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .about-txt p+p{margin-top:14px}
 .about-txt.clamp{max-height:calc(1.7em * 7); overflow:hidden; -webkit-mask-image:linear-gradient(#000 60%, transparent); mask-image:linear-gradient(#000 60%, transparent)}
 
+/* services: photo tiles, 1–8 items chosen by the hotel.
+   Desktop: rows of 3, every tile is 1/3 wide; an incomplete last row starts at the left. */
+.svc{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px}
+.svc-tile{position:relative; aspect-ratio:4/3; overflow:hidden; background:var(--soft); margin:0}
+.svc-tile img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease}
+.svc-tile:hover img{transform:scale(1.04)}
+.svc-tile::after{content:""; position:absolute; inset:0; background:linear-gradient(to top, var(--semi) 0%, color-mix(in srgb, var(--bg-semi) 18%, transparent) 45%, transparent 70%); pointer-events:none}
+.svc-cap{position:absolute; left:0; right:0; bottom:0; z-index:1; padding:20px 22px; display:grid; gap:4px; color:var(--t-semi)}
+.svc-cap b{font-family:var(--head); font-size:22px; font-weight:700; line-height:1.2; text-wrap:balance}
+.svc-cap span{display:flex; align-items:center; gap:6px; font-size:14px; opacity:.9}
+.svc-cap span::before{content:""; width:14px; height:2px; background:var(--bg-decor); flex:none}
+/* more than 2 rows → the rest hides behind "Показать ещё" */
+.svc:not(.open) .svc-tile:nth-child(n+7){display:none}
+.svc-more{margin-top:24px}
+@container site (max-width: 1000px){
+  .svc{grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+  .svc:not(.open) .svc-tile:nth-child(n+5){display:none}
+}
+@container site (max-width: 620px){
+  .svc{gap:10px}
+  .svc-tile{aspect-ratio:1/1}
+  .svc-cap{padding:12px 12px 14px}
+  .svc-cap b{font-size:16px}
+  .svc-cap span{font-size:12px}
+  .svc-cap span::before{width:10px}
+}
+
+
 /* map + contacts */
 /* map: full-bleed, hotel list floats over it inside the content column */
 .mapfull{position:relative; height:620px; border-block:1px solid var(--line)}
@@ -490,6 +518,19 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
     </div>
   </section>
 
+  <section class="sec" id="s-services">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <p class="eyebrow">Услуги</p>
+          <h2>Всё для удобного отдыха</h2>
+        </div>
+      </div>
+      <div class="svc" id="svc" data-token="Плитка услуг: подпись на полупрозрачном"></div>
+      <button class="more svc-more" id="svcMore" type="button" aria-controls="svc" aria-expanded="false" hidden></button>
+    </div>
+  </section>
+
   <section class="sec" id="s-map">
     <div class="wrap">
       <div class="sec-head">
@@ -554,6 +595,11 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
     <select id="devHotels"><option value="3">2–4</option><option value="6">5–8</option><option value="12">9 и больше</option></select>
     <svg class="devp-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
   </label>
+  <label class="devp-pill" for="devServices">
+    <span class="devp-k">Услуги</span>
+    <select id="devServices"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6" selected>6</option><option value="7">7</option><option value="8">8</option></select>
+    <svg class="devp-chev" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+  </label>
   <!-- more state controls go here as .devp-pill -->
 </aside>
 
@@ -616,7 +662,7 @@ const HOTELS = [
      full:`Удмуртская Республика, г. ${city}, ${addr}`, phone:`+7 (3412) 00-00-${String(k+10).padStart(2,"0")}`, mail:`${id}@example.ru`, url:"https://example.com/", pos})),
 ];
 
-const S = {pal:"eg", custom:{...PAL.eg}, fh:"Open Sans", fb:"Open Sans", n:3, logo:"plaque", len:"short", vp:"d", city:"Все", sel:"it"};
+const S = {pal:"eg", custom:{...PAL.eg}, fh:"Open Sans", fb:"Open Sans", n:3, svc:6, logo:"plaque", len:"short", vp:"d", city:"Все", sel:"it"};
 const $ = s => document.querySelector(s);
 const site = $("#site");
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -725,6 +771,40 @@ function renderAbout(){
   t.classList.add("clamp"); b.textContent = "Читать полностью";
   requestAnimationFrame(()=>{ b.hidden = t.scrollHeight <= t.clientHeight + 2; });
 }
+// Services: the hotel picks 1–8 in the constructor. Each tile = photo + service name + where it is available.
+const SERVICES = [
+  {name:"Ресторан удмуртской кухни", img:"img/services/restaurant.jpg", hotels:["it"]},
+  {name:"Завтраки «шведский стол»", img:"img/services/breakfast.jpg", hotels:["it","te","ts"]},
+  {name:"Трансфер в аэропорт", img:"img/services/transfer.jpg", hotels:["it","te"]},
+  {name:"Спа и массаж", img:"img/services/spa.jpg", hotels:["te"]},
+  {name:"Сауна", img:"img/services/sauna.jpg", hotels:["ts"]},
+  {name:"Фитнес-зал", img:"img/services/gym.jpg", hotels:["ts"]},
+  {name:"Конференц-зал", img:"img/services/conference.jpg", hotels:["it"]},
+  {name:"Бесплатная парковка", img:"img/services/parking.jpg", hotels:["ts","it"]},
+];
+function svcWhere(ids){
+  if(ids.length > 1) return `В ${ids.length} ${plural(ids.length,"отеле","отелях","отелях")}`;
+  const h = HOTELS.find(x => x.id===ids[0]); return h ? h.name : "";
+}
+function renderServices(){
+  $("#svc").classList.remove("open");
+  $("#svc").innerHTML = SERVICES.slice(0, S.svc).map(s => {
+    return `<figure class="svc-tile"><img src="${s.img}" alt="" loading="lazy"><figcaption class="svc-cap"><b>${esc(s.name)}</b><span>${esc(svcWhere(s.hotels))}</span></figcaption></figure>`;
+  }).join("");
+  svcMoreUpdate();
+}
+// visible = 2 rows of the current grid (desktop 3 cols → 6, tablet/phone 2 cols → 4)
+function svcMoreUpdate(){
+  const g = $("#svc"), b = $("#svcMore"), n = g.children.length;
+  const cols = getComputedStyle(g).gridTemplateColumns.split(" ").length, limit = cols * 2;
+  const open = g.classList.contains("open");
+  b.hidden = n <= limit;
+  b.textContent = open ? "Свернуть" : "Показать ещё";
+  b.setAttribute("aria-expanded", open);
+}
+$("#svcMore").onclick = () => { $("#svc").classList.toggle("open"); svcMoreUpdate(); };
+addEventListener("resize", () => requestAnimationFrame(svcMoreUpdate));
+
 $("#aboutMore").onclick = e => { const o = $("#aboutTxt").classList.toggle("clamp"); e.target.textContent = o ? "Читать полностью" : "Свернуть"; };
 
 function seg(id, key, after){
@@ -815,7 +895,8 @@ try { const v = localStorage.getItem(DEV_KEY); if(v && ["3","6","12"].includes(v
 $("#devHotels").value = String(S.n);
 $("#devHotels").onchange = e => { S.n = +e.target.value; S.city = "Все"; try { localStorage.setItem(DEV_KEY, e.target.value); } catch(_) {} renderHotels(); };
 
-applyColors(); applyFonts(); renderHotels(); renderAbout();
+applyColors(); applyFonts(); renderHotels(); renderAbout(); renderServices();
+$("#devServices").onchange = e => { S.svc = +e.target.value; renderServices(); };
 </script>
 
 <!-- TravelLine search form: same integration code as on eldviggroup.ru -->
