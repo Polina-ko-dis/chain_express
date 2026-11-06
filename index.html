@@ -91,6 +91,27 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .nav{display:flex; gap:26px; font-size:15px}
 .nav a{text-decoration:none; opacity:.92; padding-block:6px; border-bottom:2px solid transparent}
 .nav a:hover{border-color:var(--bg-decor)}
+.nav{align-items:center}
+/* hotels dropdown in header: each item goes to that hotel's own site */
+.nav-dd{position:relative}
+.nav-dd-btn{background:none; border:0; color:inherit; font:inherit; cursor:pointer; display:flex; align-items:center; gap:4px; padding:6px 0; opacity:.92; border-bottom:2px solid transparent}
+.nav-dd-btn .ico{width:15px; height:15px; transition:transform .2s}
+.nav-dd.open .nav-dd-btn, .nav-dd-btn:hover{border-color:var(--bg-decor)}
+.nav-dd.open .nav-dd-btn .ico{transform:rotate(180deg)}
+.dd{position:absolute; left:-18px; top:100%; padding-top:14px; display:none; z-index:30}
+.nav-dd.open .dd{display:block}
+@media (hover:hover){.nav-dd:hover .dd{display:block} .nav-dd:hover .nav-dd-btn .ico{transform:rotate(180deg)}}
+.dd-in{width:360px; background:var(--bg-main); color:var(--t-main); border-radius:6px; box-shadow:0 12px 36px rgb(0 0 0 / .2); padding:8px; display:grid}
+.dd-item{display:grid; grid-template-columns:52px 1fr auto; align-items:center; gap:2px 14px; padding:10px; border-radius:4px; text-decoration:none}
+.dd-item:hover,.dd-item:focus-visible{background:var(--decor-soft); outline:none}
+.dd-item img{grid-row:span 2; width:52px; height:52px; object-fit:cover; border-radius:4px}
+.dd-item b{font-family:var(--head); font-size:15px}
+.dd-item span{font-size:13px; color:var(--muted)}
+.dd-item .ico{grid-row:1/3; grid-column:3; width:16px; height:16px; color:var(--muted)}
+.dd-item:hover .ico{color:var(--t-main)}
+.mnav-cap{padding:14px 0 4px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.mnav-hotels{display:grid; border-bottom:1px solid var(--line); padding-bottom:6px}
+.mnav .mnav-hotels a{border:0; padding:9px 0; font-weight:400; display:flex; justify-content:space-between; align-items:center}
 .hdr-r{margin-left:auto; display:flex; align-items:center; gap:18px; font-size:15px}
 .hdr-phone{font-weight:600; white-space:nowrap; font-variant-numeric:tabular-nums}
 .lang{font-size:14px; font-weight:600; letter-spacing:.04em; padding-left:18px; border-left:1px solid color-mix(in srgb, currentColor 30%, transparent)}
@@ -108,20 +129,18 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .hero h1{font-size:clamp(34px, 5.2cqi, 60px); font-weight:700; max-width:16ch}
 .hero-sub{margin:16px 0 0; font-size:19px; max-width:46ch; opacity:.92}
 /* slider control: arrows + counter + progress segments, bottom right of the hero */
-.hero-navwrap{position:absolute; left:0; right:0; bottom:112px; pointer-events:none}
-.hero-nav{pointer-events:auto; margin-left:auto; width:max-content; display:grid; grid-template-columns:auto auto auto; align-items:center; gap:10px 14px; color:var(--t-semi)}
-.hn-btn{width:48px; height:48px; border-radius:50%; border:1px solid color-mix(in srgb,var(--t-semi) 55%,transparent); background:var(--semi); color:inherit; display:grid; place-items:center; cursor:pointer; transition:background .2s, border-color .2s}
+.hero-navwrap{position:absolute; left:0; right:0; bottom:120px; pointer-events:none}
+.hero-nav{pointer-events:auto; margin-left:auto; width:max-content; display:flex; gap:12px; color:var(--t-semi)}
+.hn-btn{width:52px; height:52px; border-radius:50%; border:1px solid color-mix(in srgb,var(--t-semi) 55%,transparent); background:var(--semi); color:inherit; display:grid; place-items:center; cursor:pointer; transition:background .2s, border-color .2s}
 .hn-btn:hover{background:var(--bg-acc); border-color:var(--bg-acc); color:var(--t-acc)}
 .hn-btn .ico{width:22px; height:22px}
-.hn-count{font-variant-numeric:tabular-nums; font-size:15px; min-width:56px; text-align:center; letter-spacing:.04em}
-.hn-count b{font-size:22px; font-family:var(--head)}
-.hero-dots{grid-column:1/-1; display:flex; gap:6px}
-.hero-dots button{flex:1; height:16px; border:0; padding:6px 0; background:none; cursor:pointer; position:relative}
+/* photo progress under the title: one short bar per photo, the current one fills while autoplay runs */
+.hero-dots{display:flex; gap:8px; margin-top:28px}
+.hero-dots button{width:44px; height:16px; border:0; padding:0; background:none; cursor:pointer; position:relative}
 .hero-dots button::before,.hero-dots button::after{content:""; position:absolute; left:0; top:6px; height:4px; border-radius:2px}
 .hero-dots button::before{right:0; background:color-mix(in srgb,var(--t-semi) 35%,transparent)}
 .hero-dots button::after{width:0; background:var(--bg-decor)}
-.hero-dots button.done::after{width:100%}
-.hero-dots button.on::after{width:100%}
+.hero-dots button.done::after,.hero-dots button.on::after{width:100%}
 .hero-dots.auto button.on::after{width:0; animation:hn-fill 6s linear forwards}
 @keyframes hn-fill{to{width:100%}}
 
@@ -147,18 +166,27 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .chip[aria-pressed="true"]{background:var(--bg-acc); color:var(--t-acc); border-color:var(--bg-acc)}
 
 /* hotel cards */
-.grid{display:grid; gap:28px; grid-template-columns:repeat(3,minmax(0,1fr))}
-.grid[data-n="2"]{grid-template-columns:repeat(2,minmax(0,1fr)); gap:32px}
+/* cards rail: 2 per view on desktop, arrows scroll by one card */
+.grid{--gap:32px; --per:2; display:grid; grid-auto-flow:column; grid-auto-columns:calc((100% - var(--gap) * (var(--per) - 1)) / var(--per)); gap:var(--gap);
+  overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth; overscroll-behavior-x:contain; scrollbar-width:none; padding-bottom:4px}
+.grid::-webkit-scrollbar{display:none}
+.grid>.card{scroll-snap-align:start}
+.hotels-tools{display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px}
+.rail-nav{display:flex; align-items:center; gap:10px}
+.rn-btn{width:52px; height:52px; border-radius:50%; border:1px solid var(--line); background:var(--bg-main); color:var(--t-main); display:grid; place-items:center; cursor:pointer; transition:background .2s, color .2s, border-color .2s, opacity .2s}
+.rn-btn .ico{width:22px; height:22px}
+.rn-btn:hover:not(:disabled){background:var(--bg-acc); border-color:var(--bg-acc); color:var(--t-acc)}
+.rn-btn:disabled{opacity:.35; cursor:default}
 .card{display:flex; flex-direction:column; min-width:0; background:var(--bg-main); border:1px solid var(--line); border-radius:6px; overflow:hidden}
 .card-media{position:relative; aspect-ratio:3/2; max-width:100%; background:var(--soft); overflow:hidden}
-.grid[data-n="2"] .card-media{aspect-ratio:16/10}
+.grid .card-media{aspect-ratio:16/10}
 .card-media img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease}
 .card:hover .card-media img{transform:scale(1.03)}
 .card-city{position:absolute; left:14px; top:14px; background:var(--semi); color:var(--t-semi); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:5px 10px; border-radius:3px}
 .card-cnt{position:absolute; right:14px; bottom:14px; background:var(--semi); color:var(--t-semi); font-size:12px; padding:4px 9px; border-radius:3px; display:flex; gap:6px; align-items:center}
 .card-body{display:flex; flex-direction:column; gap:12px; padding:22px 24px 24px; flex:1; min-width:0}
 .card h3{font-size:22px; font-weight:700}
-.grid[data-n="2"] .card h3{font-size:26px}
+.grid .card h3{font-size:26px}
 .stars{color:var(--bg-decor); letter-spacing:2px; font-size:14px; line-height:1}
 .addr{margin:0; display:flex; gap:8px; color:var(--muted); font-size:15px}
 .addr .ico{color:var(--bg-decor); margin-top:3px}
@@ -231,7 +259,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   .fld{border-right:0; border-bottom:1px solid var(--line); padding:10px 12px}
   .search .btn{grid-column:1/-1; min-height:52px; margin-top:6px}
   .fld:nth-last-child(2){border-bottom:1px solid var(--line)}
-  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid{--gap:24px}
   .about{grid-template-columns:1fr; gap:32px}
   .foot-grid{grid-template-columns:1fr 1fr}
   .mnav.open{display:grid; position:absolute; top:76px; left:0; right:0; background:var(--bg-main); color:var(--t-main); box-shadow:0 10px 30px rgb(0 0 0 / .15); padding:8px 28px 18px}
@@ -253,15 +281,16 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   .hero-sub{font-size:16px}
   .hero-navwrap{bottom:84px}
   .hn-btn{width:40px; height:40px}
-  .hn-count b{font-size:18px}
   .search-wrap{margin-top:-52px}
   .search{grid-template-columns:1fr 1fr}
   .fld:first-child{grid-column:1/-1}
   .fld:nth-child(4){grid-column:1/-1}
   .sec{padding-block:64px 0}
-  .grid,.grid[data-n="2"]{grid-template-columns:1fr; gap:20px}
+  .grid{--gap:14px; grid-auto-columns:86%}
+  .rn-btn{width:44px; height:44px}
+  .hotels-tools{width:100%; justify-content:space-between}
   .card-body{padding:18px}
-  .card h3,.grid[data-n="2"] .card h3{font-size:21px}
+  .card h3,.grid .card h3{font-size:21px}
   .acts{width:100%; justify-content:space-between}
   .acts .btn{flex:1}
   .mapfull{height:auto}
@@ -326,7 +355,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
       </select></label>
     <label class="ctl"><span>Шрифт заголовков</span><select id="fh"></select></label>
     <label class="ctl"><span>Шрифт текста</span><select id="fb"></select></label>
-    <div class="ctl"><span>Отелей в сети</span><div class="seg" id="cnt"><button type="button" data-v="2" aria-pressed="true">2</button><button type="button" data-v="3" aria-pressed="false">3</button><button type="button" data-v="6" aria-pressed="false">6</button></div></div>
+    <div class="ctl"><span>Отелей в сети</span><div class="seg" id="cnt"><button type="button" data-v="2" aria-pressed="false">2</button><button type="button" data-v="3" aria-pressed="true">3</button><button type="button" data-v="6" aria-pressed="false">6</button></div></div>
     <div class="ctl"><span>Логотип</span><div class="seg" id="logo"><button type="button" data-v="plaque" aria-pressed="true">На плашке</button><button type="button" data-v="clear" aria-pressed="false">Без фона</button></div></div>
     <div class="ctl"><span>Тексты</span><div class="seg" id="len"><button type="button" data-v="short" aria-pressed="true">Как в ТЗ</button><button type="button" data-v="long" aria-pressed="false">Как у клиента</button></div></div>
     <div class="ctl"><span>Экран</span><div class="seg" id="vp"><button type="button" data-v="d" aria-pressed="true">Десктоп</button><button type="button" data-v="m" aria-pressed="false">Телефон</button></div></div>
@@ -350,7 +379,11 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
         </span>
       </a>
       <nav class="nav" aria-label="Разделы">
-        <a href="#s-hotels">Отели</a><a href="#s-about">О сети</a><a href="#s-map">Карта и контакты</a>
+        <div class="nav-dd" id="navDd">
+          <button class="nav-dd-btn" id="navDdBtn" type="button" aria-expanded="false" aria-controls="ddHotels">Отели <svg class="ico"><use href="#i-down"/></svg></button>
+          <div class="dd" id="ddHotels"><div class="dd-in" id="ddList"></div></div>
+        </div>
+        <a href="#s-about">О сети</a><a href="#s-map">Карта и контакты</a>
       </nav>
       <div class="hdr-r">
         <span class="hdr-phone">8 (999) 280-51-50</span>
@@ -360,7 +393,9 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
       </div>
     </div>
     <nav class="mnav" id="mnav" aria-label="Меню">
-      <a href="#s-hotels">Отели</a><a href="#s-about">О сети</a><a href="#s-map">Карта и контакты</a><a href="#s-map">8 (999) 280-51-50</a>
+      <span class="mnav-cap">Отели</span>
+      <div class="mnav-hotels" id="mnavHotels"></div>
+      <a href="#s-about">О сети</a><a href="#s-map">Карта и контакты</a><a href="#s-map">8 (999) 280-51-50</a>
     </nav>
   </header>
 
@@ -374,14 +409,12 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
     <div class="wrap hero-in">
       <p class="hero-kicker" id="heroKicker">Ижевск · 2 гостиницы</p>
       <h1 id="heroTitle">Гостиницы EG Hotels в Ижевске</h1>
-      <p class="hero-sub" id="heroSub">Рядом с вокзалом и в историческом центре. Выберите отель под свою поездку.</p>
+      <div class="hero-dots auto" id="dots" role="group" aria-label="Фотографии"></div>
     </div>
     <div class="wrap hero-navwrap">
       <div class="hero-nav" role="group" aria-label="Фотографии">
         <button class="hn-btn" id="hnPrev" type="button" aria-label="Предыдущее фото"><svg class="ico"><use href="#i-left"/></svg></button>
-        <span class="hn-count" aria-live="polite"><b id="hnCur">1</b> / <span id="hnTot">3</span></span>
         <button class="hn-btn" id="hnNext" type="button" aria-label="Следующее фото"><svg class="ico"><use href="#i-right"/></svg></button>
-        <div class="hero-dots auto" id="dots"></div>
       </div>
     </div>
   </section>
@@ -401,11 +434,17 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
       <div class="sec-head">
         <div>
           <p class="eyebrow">Отели сети</p>
-          <h2 id="hotelsTitle">Две гостиницы для разных поездок</h2>
+          <h2 id="hotelsTitle">Выберите гостиницу под свою поездку</h2>
         </div>
-        <div class="filters" id="filters" hidden></div>
+        <div class="hotels-tools">
+          <div class="filters" id="filters" hidden></div>
+          <div class="rail-nav" id="railNav" role="group" aria-label="Листать отели">
+            <button class="rn-btn" id="railPrev" type="button" aria-label="Предыдущие отели"><svg class="ico"><use href="#i-left"/></svg></button>
+            <button class="rn-btn" id="railNext" type="button" aria-label="Следующие отели"><svg class="ico"><use href="#i-right"/></svg></button>
+          </div>
+        </div>
       </div>
-      <div class="grid" id="grid"></div>
+      <div class="grid" id="grid" tabindex="-1"></div>
     </div>
   </section>
 
@@ -516,34 +555,44 @@ const HOTELS = [
   {id:"it", name:"Гостиница «Италмас»", longName:"Гостиница Италмас", city:"Ижевск", stars:3, addr:"ул. Гагарина, 5б", img:IMG.a, photos:24,
    tags:["1 км от вокзала","Удмуртский стиль","Завтраки"], tagsLong:["1 км от вокзала","Удмуртский стиль","Завтраки, обеды и ужины","Трансфер в аэропорт","Хранение багажа","Прачечная"],
    short:"Трёхзвёздочная гостиница в 15 минутах пешком от вокзала. Номера названы в честь городов Удмуртии, в холлах висят картины местных художников.", long:LONG_IT,
-   phone:"+7 (3412) 31-00-11", mail:"italmas.izh18@yandex.ru", price:"2 900", pos:[54,62]},
+   phone:"+7 (3412) 31-00-11", mail:"italmas.izh18@yandex.ru", url:"https://italmashotel.ru/", price:"2 900", pos:[54,62]},
   {id:"te", name:"Гостиница «Театральная»", longName:"Гостиница \"Театральная\"", city:"Ижевск", stars:0, addr:"ул. Горького, 68", img:IMG.b, photos:18,
    tags:["Исторический центр","Заселение без ресепшена","Вид на собор"], tagsLong:["Исторический центр","Самостоятельное заселение","Вид на собор","Парк Горького рядом","Набережная"],
    short:"Современный отель напротив Русского драмтеатра и собора Александра Невского. Заселение самостоятельное, без стойки администратора.", long:LONG_TE,
-   phone:"8 (999) 280-51-50", mail:"hotelteatr@mail.ru", price:"3 400", pos:[70,30]},
-  {id:"nb", name:"Апарт-отель «Набережная»", longName:"Апарт-отель «Набережная» на улице Максима Горького", city:"Ижевск", stars:0, addr:"ул. Свободы, 12", img:IMG.c, photos:12,
-   tags:["Кухня в номере","У пруда"], tagsLong:["Кухня в номере","У пруда","Парковка","Долгое проживание"],
-   short:"Апартаменты с кухней на берегу Ижевского пруда. Подходят для семейных поездок и долгого проживания.", long:"Апартаменты с кухней на берегу Ижевского пруда, в каждом номере есть всё для самостоятельного проживания: плита, холодильник, посуда, стиральная машина. Подходят для семейных поездок и долгого проживания, для гостей на неделю и дольше действуют специальные условия.",
-   phone:"+7 (3412) 00-00-01", mail:"nab@example.ru", price:"4 100", pos:[84,54]},
+   phone:"8 (999) 280-51-50", mail:"hotelteatr@mail.ru", url:"https://teatrhotel.ru/", price:"3 400", pos:[70,30]},
+  {id:"ts", name:"Гостиница «Тестовая»", longName:"Гостиница «Тестовая»", city:"Ижевск", stars:0, addr:"ул. Удмуртская, 304", img:IMG.c, photos:15,
+   tags:["Бесплатная парковка","Удобно на машине","Круглосуточно"], tagsLong:["Бесплатная парковка","Удобно на машине","Круглосуточно","Завтраки","Семейные номера"],
+   short:"Гостиница у выезда из города, с бесплатной парковкой и круглосуточной стойкой. Удобна для поездок на машине и для гостей с детьми.", long:"Гостиница у выезда из города, с бесплатной парковкой и круглосуточной стойкой. Удобна для поездок на машине: до трассы на Пермь и Казань несколько минут. Есть семейные номера, завтраки включены в стоимость.",
+   phone:"+7 (3412) 00-00-00", mail:"test@example.ru", url:"https://example.com/", pos:[84,54]},
   {id:"ka", name:"Отель «Кама»", longName:"Отель «Кама»", city:"Сарапул", stars:3, addr:"ул. Советская, 4", img:IMG.d, photos:9,
    tags:["Вид на Каму","Ресторан"], tagsLong:["Вид на Каму","Ресторан","Конференц-зал"],
    short:"Отель в старом купеческом центре Сарапула с видом на Каму.", long:"Отель в старом купеческом центре Сарапула с видом на Каму. Рядом пристань и краеведческий музей.",
-   phone:"+7 (34147) 0-00-02", mail:"kama@example.ru", price:"2 600", pos:[90,80]},
+   phone:"+7 (34147) 0-00-02", mail:"kama@example.ru", url:"https://example.com/", price:"2 600", pos:[90,80]},
   {id:"vo", name:"Гостевой дом «Чайковский»", longName:"Гостевой дом «Чайковский»", city:"Воткинск", stars:0, addr:"ул. Ленина, 20", img:IMG.a, photos:7,
    tags:["Рядом с музеем-усадьбой"], tagsLong:["Рядом с музеем-усадьбой","Сад","Завтраки"],
    short:"Небольшой гостевой дом в десяти минутах от музея-усадьбы П. И. Чайковского.", long:"Небольшой гостевой дом в десяти минутах от музея-усадьбы П. И. Чайковского. Восемь номеров, сад и домашние завтраки.",
-   phone:"+7 (34145) 0-00-03", mail:"dom@example.ru", price:"2 300", pos:[78,12]},
+   phone:"+7 (34145) 0-00-03", mail:"dom@example.ru", url:"https://example.com/", price:"2 300", pos:[78,12]},
   {id:"gl", name:"Мини-отель «Северный»", longName:"Мини-отель «Северный»", city:"Глазов", stars:0, addr:"ул. Кирова, 9", img:IMG.b, photos:6,
    tags:["Парковка","Круглосуточно"], tagsLong:["Парковка","Круглосуточно","Для командировок"],
    short:"Мини-отель для командировок в центре Глазова, с парковкой.", long:"Мини-отель для командировок в центре Глазова. Парковка, круглосуточная стойка, отчётные документы.",
-   phone:"+7 (34141) 0-00-04", mail:"sever@example.ru", price:"2 100", pos:[46,16]},
+   phone:"+7 (34141) 0-00-04", mail:"sever@example.ru", url:"https://example.com/", price:"2 100", pos:[46,16]},
 ];
 
-const S = {pal:"eg", custom:{...PAL.eg}, fh:"Open Sans", fb:"Open Sans", n:2, logo:"plaque", len:"short", vp:"d", city:"Все", sel:"it"};
+const S = {pal:"eg", custom:{...PAL.eg}, fh:"Open Sans", fb:"Open Sans", n:3, logo:"plaque", len:"short", vp:"d", city:"Все", sel:"it"};
 const $ = s => document.querySelector(s);
 const site = $("#site");
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const word = n => n===2?"две гостиницы":n===3?"три отеля":n+" отелей";
+const plural = (n,a,b,c) => { const m10=n%10, m100=n%100; return m10===1&&m100!==11 ? a : m10>=2&&m10<=4&&(m100<10||m100>=20) ? b : c; };
+function railStep(){ const g=$("#grid"), c=g.querySelector(".card"); return c ? c.getBoundingClientRect().width + parseFloat(getComputedStyle(g).columnGap||0) : g.clientWidth; }
+function railUpdate(){
+  const g=$("#grid"), cards=g.querySelectorAll(".card").length, step=railStep();
+  const per = Math.max(1, Math.round(g.clientWidth / step));
+  const first = Math.round(g.scrollLeft / step);
+  const scrollable = g.scrollWidth > g.clientWidth + 2;
+  $("#railNav").hidden = !scrollable;
+  $("#railPrev").disabled = g.scrollLeft < 4;
+  $("#railNext").disabled = g.scrollLeft + g.clientWidth > g.scrollWidth - 4;
+}
 
 function applyColors(){
   const p = S.pal==="custom" ? S.custom : PAL[S.pal];
@@ -564,7 +613,7 @@ function renderHotels(){
   const f = $("#filters");
   f.hidden = cities.length < 2;
   f.innerHTML = ["Все",...cities].map(c => `<button type="button" class="chip" aria-pressed="${c===S.city}" data-c="${esc(c)}">${esc(c==="Все"?"Все города":c)}</button>`).join("");
-  $("#hotelsTitle").textContent = S.n===2 ? "Две гостиницы для разных поездок" : `${S.n} отелей в Удмуртии`;
+  const one = cities.length===1;
   const g = $("#grid");
   g.dataset.n = hs.length;
   g.innerHTML = hs.map(h => `
@@ -582,7 +631,7 @@ function renderHotels(){
         <p class="desc">${esc(L?h.long:h.short)}</p>
         <button class="more" type="button" hidden>Подробнее</button>
         <div class="card-foot">
-          <div class="acts"><a class="btn btn-acc" href="#top" data-book="${h.id}">Узнать цену</a><a class="link" href="#s-hotels">Сайт отеля <svg class="ico" style="width:15px;height:15px"><use href="#i-arrow"/></svg></a></div>
+          <div class="acts"><a class="btn btn-acc" href="#top" data-book="${h.id}">Узнать цену</a><a class="link" href="${h.url}" target="_blank" rel="noopener">Сайт отеля <svg class="ico" style="width:15px;height:15px"><use href="#i-arrow"/></svg></a></div>
         </div>
       </div>
     </article>`).join("");
@@ -595,10 +644,14 @@ function renderHotels(){
   const prevHotel = $("#sHotel").value;
   $("#sHotel").innerHTML = all.map(h=>`<option value="${h.id}">${esc(h.name)}</option>`).join("");
   $("#sHotel").value = all.some(h=>h.id===prevHotel) ? prevHotel : all[0].id;
-  $("#footHotels").innerHTML = all.map(h=>`<li><a href="#s-hotels">${esc(h.name)}</a></li>`).join("");
-  const kick = S.n===2 ? "Ижевск · 2 гостиницы" : `Удмуртия · ${S.n} отелей в ${cities.length} городах`;
-  $("#heroKicker").textContent = kick;
-  $("#heroTitle").textContent = S.n===2 ? "Гостиницы EG Hotels в Ижевске" : "Отели EG Hotels в Удмуртии";
+  $("#footHotels").innerHTML = all.map(h=>`<li><a href="${h.url}" target="_blank" rel="noopener">${esc(h.name)}</a></li>`).join("");
+  const arr = `<svg class="ico"><use href="#i-arrow"/></svg>`;
+  $("#ddList").innerHTML = all.map(h=>`<a class="dd-item" href="${h.url}" target="_blank" rel="noopener"><img src="${h.img}" alt=""><b>${esc(h.name)}</b><span>${esc(h.city)}, ${esc(h.addr)}</span>${arr}</a>`).join("");
+  $("#mnavHotels").innerHTML = all.map(h=>`<a href="${h.url}" target="_blank" rel="noopener">${esc(h.name)} ${arr}</a>`).join("");
+  $("#heroKicker").textContent = one ? `Ижевск · ${S.n} ${plural(S.n,"гостиница","гостиницы","гостиниц")}` : `Удмуртия · ${S.n} отелей в ${cities.length} городах`;
+  $("#heroTitle").textContent = one ? "Гостиницы EG Hotels в Ижевске" : "Отели EG Hotels в Удмуртии";
+  g.scrollLeft = 0;
+  requestAnimationFrame(railUpdate);
   if(!all.some(h=>h.id===S.sel)) S.sel = all[0].id;
   renderMap();
 }
@@ -638,6 +691,10 @@ seg("#len","len",()=>{ renderHotels(); renderAbout(); });
 seg("#logo","logo",()=>{ $("#logoEl").className = "logo " + S.logo; });
 seg("#vp","vp",()=>{ $("#stage").classList.toggle("is-mobile", S.vp==="m"); setTimeout(()=>{renderHotels(); renderAbout();},320); });
 
+$("#railPrev").onclick = () => $("#grid").scrollBy({left:-railStep()});
+$("#railNext").onclick = () => $("#grid").scrollBy({left: railStep()});
+$("#grid").addEventListener("scroll", () => requestAnimationFrame(railUpdate), {passive:true});
+addEventListener("resize", () => requestAnimationFrame(railUpdate));
 $("#filters").addEventListener("click", e => { const b = e.target.closest(".chip"); if(!b) return; S.city = b.dataset.c; renderHotels(); });
 document.addEventListener("click", e => {
   const m = e.target.closest(".mitem,.pin"); if(m){ S.sel = m.dataset.id; renderMap(); }
@@ -660,7 +717,12 @@ $("#cols").addEventListener("input", e => {
   S.custom[k] = e.target.value; applyColors();
 });
 
-$("#burger").onclick = () => { const o = $("#mnav").classList.toggle("open"); $("#burger").setAttribute("aria-expanded", o); };
+const navDd = $("#navDd"), navDdBtn = $("#navDdBtn");
+function ddSet(o){ navDd.classList.toggle("open", o); navDdBtn.setAttribute("aria-expanded", o); }
+navDdBtn.onclick = e => { e.stopPropagation(); ddSet(!navDd.classList.contains("open")); };
+document.addEventListener("click", e => { if(!navDd.contains(e.target)) ddSet(false); });
+document.addEventListener("keydown", e => { if(e.key==="Escape"){ ddSet(false); navDdBtn.blur(); } });
+$("#burger").onclick =() => { const o = $("#mnav").classList.toggle("open"); $("#burger").setAttribute("aria-expanded", o); };
 $("#mnav").addEventListener("click", e => { if(e.target.closest("a")) $("#mnav").classList.remove("open"); });
 
 // header: semi-transparent over hero, solid below it
@@ -671,25 +733,24 @@ new IntersectionObserver(([en]) => hdr.classList.toggle("is-solid", !en.isInters
 const slides = [...document.querySelectorAll("#slides img")];
 let cur = 0;
 const dotsBox = $("#dots");
-dotsBox.innerHTML = slides.map((_,i)=>`<button type="button" aria-label="Фото ${i+1} из ${slides.length}"></button>`).join("");
+dotsBox.innerHTML = slides.map((_,i)=>`<button type="button" aria-label="Фото ${i+1}"></button>`).join("");
 const dots = [...dotsBox.querySelectorAll("button")];
-$("#hnTot").textContent = slides.length;
-const autoplay = !matchMedia("(prefers-reduced-motion: reduce)").matches;
 let timer = null;
 function go(i, user){
   cur = (i + slides.length) % slides.length;
   slides.forEach((s,k)=>s.classList.toggle("on", k===cur));
   dots.forEach((d,k)=>{ d.classList.remove("on"); d.classList.toggle("done", k<cur); d.setAttribute("aria-current", k===cur); });
-  void dots[cur].offsetWidth;            // restart the progress fill
+  void dots[cur].offsetWidth;   // restart the fill animation
   dots[cur].classList.add("on");
-  $("#hnCur").textContent = cur + 1;
   if(user){ dotsBox.classList.remove("auto"); clearInterval(timer); timer = null; }
 }
-dots.forEach((d,i)=>d.onclick=()=>go(i,true));
+dots.forEach((d,k)=>d.onclick=()=>go(k,true));
 $("#hnPrev").onclick = () => go(cur-1, true);
 $("#hnNext").onclick = () => go(cur+1, true);
 $("#top").addEventListener("keydown", e => { if(e.key==="ArrowLeft") go(cur-1,true); if(e.key==="ArrowRight") go(cur+1,true); });
-if(autoplay) timer = setInterval(()=>go(cur+1), 6000); else dotsBox.classList.remove("auto");
+if(slides.length < 2){ $(".hero-nav").hidden = true; dotsBox.hidden = true; }
+else if(!matchMedia("(prefers-reduced-motion: reduce)").matches) timer = setInterval(()=>go(cur+1), 6000);
+else dotsBox.classList.remove("auto");
 go(0);
 
 // dates
