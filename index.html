@@ -70,7 +70,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .wrap{max-width:1200px; margin:0 auto; padding-inline:40px}
 .ico{width:18px; height:18px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
 
-.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:46px; padding:0 22px; border-radius:4px; border:0; cursor:pointer; text-decoration:none; font-weight:600; font-size:15px; white-space:nowrap}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:46px; padding:0 22px; border-radius:0; border:0; cursor:pointer; text-decoration:none; font-weight:600; font-size:15px; white-space:nowrap}
 .btn-acc,.site a.btn-acc{background:var(--bg-acc); color:var(--t-acc)}
 .btn-acc:hover{filter:brightness(1.08)}
 .btn-ghost{background:transparent; color:inherit; border:1px solid currentColor}
@@ -101,8 +101,8 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .dd{position:absolute; left:-18px; top:100%; padding-top:14px; display:none; z-index:30}
 .nav-dd.open .dd{display:block}
 @media (hover:hover){.nav-dd:hover .dd{display:block} .nav-dd:hover .nav-dd-btn .ico{transform:rotate(180deg)}}
-.dd-in{width:320px; background:var(--bg-main); color:var(--t-main); border-radius:6px; box-shadow:0 12px 36px rgb(0 0 0 / .2); padding:8px; display:grid}
-.dd-item{display:grid; grid-template-columns:1fr auto; align-items:center; gap:2px 14px; padding:10px 12px; border-radius:4px; text-decoration:none}
+.dd-in{width:320px; background:var(--bg-main); color:var(--t-main); border-radius:0; box-shadow:0 12px 36px rgb(0 0 0 / .2); padding:8px; display:grid}
+.dd-item{display:grid; grid-template-columns:1fr auto; align-items:center; gap:2px 14px; padding:10px 12px; border-radius:0; text-decoration:none}
 .dd-item:hover,.dd-item:focus-visible{background:var(--decor-soft); outline:none}
 .dd-item b{font-family:var(--head); font-size:15px}
 .dd-item span{font-size:13px; color:var(--muted)}
@@ -131,7 +131,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .hero-sub{margin:16px 0 0; font-size:19px; max-width:46ch; opacity:.92}
 /* slider control: arrows + counter + progress segments, bottom right of the hero */
 .hero-nav{flex:none; display:flex; gap:12px; color:var(--t-semi)}
-.hn-btn{width:52px; height:52px; border-radius:50%; border:1px solid color-mix(in srgb,var(--t-semi) 55%,transparent); background:var(--semi); color:inherit; display:grid; place-items:center; cursor:pointer; transition:background .2s, border-color .2s}
+.hn-btn{width:52px; height:52px; border-radius:0; border:1px solid color-mix(in srgb,var(--t-semi) 55%,transparent); background:var(--semi); color:inherit; display:grid; place-items:center; cursor:pointer; transition:background .2s, border-color .2s}
 .hn-btn:hover{background:var(--bg-acc); border-color:var(--bg-acc); color:var(--t-acc)}
 .hn-btn .ico{width:22px; height:22px}
 /* photo progress under the title: one short bar per photo, the current one fills while autoplay runs */
@@ -146,12 +146,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 
 /* search */
 .search-wrap{position:relative; z-index:5; width:100%; padding-block:0 40px}
-.search{position:relative; background:var(--bg-main); color:var(--t-main); border-radius:6px; box-shadow:0 10px 40px rgb(0 0 0 / .16); padding:18px; display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr auto; gap:0; align-items:stretch}
-.fld{display:grid; gap:2px; padding:8px 18px; border-right:1px solid var(--line); min-width:0}
-.fld:nth-last-child(2){border-right:0}
-.fld label{font-size:12px; color:var(--muted)}
-.fld select,.fld input{border:0; background:transparent; color:var(--t-main); font-size:16px; font-weight:600; padding:2px 0; width:100%; min-width:0; color-scheme:inherit; cursor:pointer}
-.search .btn{height:auto; min-height:56px; padding:0 30px; font-size:16px}
+.search-form{min-height:149px}
 
 /* sections */
 .sec{padding-block:96px 0}
@@ -162,7 +157,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .eyebrow::before{content:""; width:22px; height:2px; background:var(--bg-decor)}
 
 .filters{display:flex; flex-wrap:wrap; gap:8px}
-.chip{height:36px; padding:0 16px; border-radius:18px; border:1px solid var(--line); background:transparent; color:var(--t-main); cursor:pointer; font-size:14px}
+.chip{height:36px; padding:0 16px; border-radius:0; border:1px solid var(--line); background:transparent; color:var(--t-main); cursor:pointer; font-size:14px}
 .chip[aria-pressed="true"]{background:var(--bg-acc); color:var(--t-acc); border-color:var(--bg-acc)}
 
 /* hotel cards */
@@ -173,17 +168,17 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .grid>.card{scroll-snap-align:start}
 .hotels-tools{display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px}
 .rail-nav{display:flex; align-items:center; gap:10px}
-.rn-btn{width:52px; height:52px; border-radius:50%; border:1px solid var(--line); background:var(--bg-main); color:var(--t-main); display:grid; place-items:center; cursor:pointer; transition:background .2s, color .2s, border-color .2s, opacity .2s}
+.rn-btn{width:52px; height:52px; border-radius:0; border:1px solid var(--line); background:var(--bg-main); color:var(--t-main); display:grid; place-items:center; cursor:pointer; transition:background .2s, color .2s, border-color .2s, opacity .2s}
 .rn-btn .ico{width:22px; height:22px}
 .rn-btn:hover:not(:disabled){background:var(--bg-acc); border-color:var(--bg-acc); color:var(--t-acc)}
 .rn-btn:disabled{opacity:.35; cursor:default}
-.card{display:flex; flex-direction:column; min-width:0; background:var(--bg-main); border:1px solid var(--line); border-radius:6px; overflow:hidden}
+.card{display:flex; flex-direction:column; min-width:0; background:var(--bg-main); border:1px solid var(--line); border-radius:0; overflow:hidden}
 .card-media{position:relative; aspect-ratio:3/2; max-width:100%; background:var(--soft); overflow:hidden}
 .grid .card-media{aspect-ratio:16/10}
 .card-media img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .6s ease}
 .card:hover .card-media img{transform:scale(1.03)}
-.card-city{position:absolute; left:14px; top:14px; background:var(--semi); color:var(--t-semi); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:5px 10px; border-radius:3px}
-.card-cnt{position:absolute; right:14px; bottom:14px; background:var(--semi); color:var(--t-semi); font-size:12px; padding:4px 9px; border-radius:3px; display:flex; gap:6px; align-items:center}
+.card-city{position:absolute; left:14px; top:14px; background:var(--semi); color:var(--t-semi); font-size:12px; letter-spacing:.06em; text-transform:uppercase; padding:5px 10px; border-radius:0}
+.card-cnt{position:absolute; right:14px; bottom:14px; background:var(--semi); color:var(--t-semi); font-size:12px; padding:4px 9px; border-radius:0; display:flex; gap:6px; align-items:center}
 .card-body{display:flex; flex-direction:column; gap:12px; padding:22px 24px 24px; flex:1; min-width:0}
 .card h3{font-size:22px; font-weight:700}
 .grid .card h3{font-size:26px}
@@ -191,7 +186,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .addr{margin:0; display:flex; gap:8px; color:var(--muted); font-size:15px}
 .addr .ico{color:var(--bg-decor); margin-top:3px}
 .tags{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px}
-.tags li{font-size:13px; padding:4px 10px; border-radius:3px; background:var(--decor-soft); color:var(--t-main)}
+.tags li{font-size:13px; padding:4px 10px; border-radius:0; background:var(--decor-soft); color:var(--t-main)}
 .desc{margin:0; font-size:15px; color:color-mix(in srgb,var(--t-main) 82%,var(--bg-main)); display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; overflow:hidden}
 .desc.open{-webkit-line-clamp:unset; display:block}
 .more{align-self:flex-start; background:none; border:0; padding:0; color:var(--t-main); font-weight:600; font-size:14px; cursor:pointer; text-decoration:underline; text-decoration-color:var(--bg-decor); text-underline-offset:4px; text-decoration-thickness:2px}
@@ -215,7 +210,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .map-ov{position:relative; height:100%; display:flex; align-items:center; pointer-events:none}
 .mlist{pointer-events:auto; list-style:none; margin:0; padding:0; width:370px; max-width:100%; max-height:calc(100% - 64px); overflow:auto;
   background:color-mix(in srgb, var(--bg-main) 86%, transparent); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-  border-radius:6px; box-shadow:0 8px 30px rgb(0 0 0 / .14)}
+  border-radius:0; box-shadow:0 8px 30px rgb(0 0 0 / .14)}
 .mlist li+li{border-top:1px solid var(--line)}
 .mitem{all:unset; box-sizing:border-box; display:grid; grid-template-columns:auto 1fr; gap:4px 14px; width:100%; padding:20px 22px; cursor:pointer}
 .mitem:focus-visible{outline:2px solid var(--bg-acc); outline-offset:-2px}
@@ -229,11 +224,11 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .pin{position:absolute; transform:translate(-50%,-100%); display:flex; flex-direction:column; align-items:center; border:0; background:none; padding:0; cursor:pointer; transition:transform .2s}
 .pin i{font-style:normal; width:30px; height:30px; border-radius:50% 50% 50% 0; transform:rotate(-45deg); background:var(--bg-acc); display:grid; place-items:center; box-shadow:0 3px 8px rgb(0 0 0 / .25)}
 .pin i span{transform:rotate(45deg); color:var(--t-acc); font-size:12px; font-weight:700}
-.pin em{font-style:normal; margin-top:8px; background:var(--bg-main); color:var(--t-main); font-size:12px; font-weight:600; padding:3px 8px; border-radius:3px; box-shadow:0 1px 4px rgb(0 0 0 / .18); white-space:nowrap; opacity:0; transition:opacity .2s}
+.pin em{font-style:normal; margin-top:8px; background:var(--bg-main); color:var(--t-main); font-size:12px; font-weight:600; padding:3px 8px; border-radius:0; box-shadow:0 1px 4px rgb(0 0 0 / .18); white-space:nowrap; opacity:0; transition:opacity .2s}
 .pin.on{transform:translate(-50%,-100%) scale(1.18); z-index:2}
 .pin.on em{opacity:1}
 .map-note{position:absolute; right:16px; bottom:16px; font-size:12px}
-.map-note a{background:var(--bg-main); color:var(--t-main); padding:6px 10px; border-radius:3px; text-decoration:none; font-weight:600; box-shadow:0 1px 4px rgb(0 0 0 / .14)}
+.map-note a{background:var(--bg-main); color:var(--t-main); padding:6px 10px; border-radius:0; text-decoration:none; font-weight:600; box-shadow:0 1px 4px rgb(0 0 0 / .14)}
 
 /* footer */
 .foot{margin-top:96px; background:var(--bg-extra); color:var(--t-extra); padding-block:56px 28px}
@@ -244,7 +239,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
 .foot a:hover{text-decoration:underline}
 .foot .big{font-family:var(--head); font-size:22px; font-weight:700; font-variant-numeric:tabular-nums}
 .msgr{display:flex; gap:10px; margin-top:12px}
-.msgr a{width:38px; height:38px; border-radius:50%; border:1px solid color-mix(in srgb,var(--t-extra) 30%,transparent); display:grid; place-items:center}
+.msgr a{width:38px; height:38px; border-radius:0; border:1px solid color-mix(in srgb,var(--t-extra) 30%,transparent); display:grid; place-items:center}
 .foot-bot{margin-top:44px; padding-top:20px; border-top:1px solid color-mix(in srgb,var(--t-extra) 16%,transparent); display:flex; flex-wrap:wrap; justify-content:space-between; gap:10px; font-size:13px; opacity:.7}
 .foot .wmark{color:var(--t-extra); height:38px; display:block; margin-bottom:14px}
 
@@ -255,10 +250,6 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   .wrap{padding-inline:28px}
   .nav{display:none}
   .burger{display:block}
-  .search{grid-template-columns:1fr 1fr; gap:4px; padding:12px}
-  .fld{border-right:0; border-bottom:1px solid var(--line); padding:10px 12px}
-  .search .btn{grid-column:1/-1; min-height:52px; margin-top:6px}
-  .fld:nth-last-child(2){border-bottom:1px solid var(--line)}
   .grid{--gap:24px}
   .about{grid-template-columns:1fr; gap:32px}
   .foot-grid{grid-template-columns:1fr 1fr}
@@ -284,9 +275,6 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   .hero-sub{font-size:16px}
   .hn-btn{width:40px; height:40px}
   .search-wrap{padding-block:0 16px}
-  .search{grid-template-columns:1fr 1fr}
-  .fld:first-child{grid-column:1/-1}
-  .fld:nth-child(4){grid-column:1/-1}
   .sec{padding-block:64px 0}
   .grid{--gap:14px; grid-auto-columns:86%}
   .rn-btn{width:44px; height:44px}
@@ -306,7 +294,7 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
   .mbar{display:block; position:sticky; bottom:0; z-index:15; padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px)); background:var(--bg-main); box-shadow:0 -1px 0 var(--line), 0 -6px 20px rgb(0 0 0 / .08); margin-top:-66px}
   .mbar .btn{width:100%}
 }
-.hdr-call{display:none; width:38px; height:38px; border-radius:50%; border:1px solid currentColor; place-items:center; color:inherit}
+.hdr-call{display:none; width:38px; height:38px; border-radius:0; border:1px solid currentColor; place-items:center; color:inherit}
 
 /* ---------- token annotations ---------- */
 .show-tokens [data-token]{outline:2px dashed var(--tok); outline-offset:-2px; position:relative}
@@ -420,13 +408,8 @@ details.cols summary{cursor:pointer; font-size:13px; color:var(--ui-accent)}
       </div>
     </div>
     <div class="wrap search-wrap">
-    <form class="search" id="search" data-token="Форма поиска: основной фон · кнопка «форма поиска и кнопки»">
-      <div class="fld"><label for="sHotel">Отель</label><select id="sHotel"></select></div>
-      <div class="fld"><label for="sIn">Заезд</label><input id="sIn" type="date"></div>
-      <div class="fld"><label for="sOut">Выезд</label><input id="sOut" type="date"></div>
-      <div class="fld"><label for="sGuests">Гости</label><select id="sGuests"><option>1 взрослый</option><option selected>2 взрослых</option><option>2 взрослых, 1 ребёнок</option><option>3 взрослых</option></select></div>
-      <button class="btn btn-acc" type="submit">Найти номер</button>
-    </form>
+    <!-- TravelLine search form, embedded exactly as on eldviggroup.ru -->
+    <div id="tl-search-form" class="search-form" data-token="Форма поиска TravelLine (виджет, как на текущем сайте)"></div>
     </div>
   </section>
 
@@ -621,18 +604,13 @@ function renderHotels(){
     <article class="card">
       <div class="card-media">
         <img alt="${esc(h.name)}" src="${h.img}" loading="lazy">
-        <span class="card-city">${esc(h.city)}</span>
-        <span class="card-cnt"><svg class="ico" style="width:14px;height:14px"><use href="#i-photo"/></svg>${h.photos} фото</span>
       </div>
       <div class="card-body">
-        ${h.stars?`<div class="stars" aria-label="${h.stars} звезды">${"★".repeat(h.stars)}</div>`:""}
         <h3>${esc(L?h.longName:h.name)}</h3>
-        <p class="addr"><svg class="ico"><use href="#i-pin"/></svg><span>${esc(h.city)}, ${esc(h.addr)}</span></p>
-        <ul class="tags">${(L?h.tagsLong:h.tags).map(t=>`<li>${esc(t)}</li>`).join("")}</ul>
         <p class="desc">${esc(L?h.long:h.short)}</p>
         <button class="more" type="button" hidden>Подробнее</button>
         <div class="card-foot">
-          <div class="acts"><a class="btn btn-acc" href="#top" data-book="${h.id}">Узнать цену</a><a class="link" href="${h.url}" target="_blank" rel="noopener">Сайт отеля <svg class="ico" style="width:15px;height:15px"><use href="#i-arrow"/></svg></a></div>
+          <div class="acts"><a class="btn btn-acc" href="${h.url}booking" target="_blank" rel="noopener">Узнать цену</a><a class="link" href="${h.url}" target="_blank" rel="noopener">Сайт отеля <svg class="ico" style="width:15px;height:15px"><use href="#i-arrow"/></svg></a></div>
         </div>
       </div>
     </article>`).join("");
@@ -642,9 +620,6 @@ function renderHotels(){
     b.onclick = () => { const o = d.classList.toggle("open"); b.textContent = o ? "Свернуть" : "Подробнее"; };
   }));
 
-  const prevHotel = $("#sHotel").value;
-  $("#sHotel").innerHTML = all.map(h=>`<option value="${h.id}">${esc(h.name)}</option>`).join("");
-  $("#sHotel").value = all.some(h=>h.id===prevHotel) ? prevHotel : all[0].id;
   $("#footHotels").innerHTML = all.map(h=>`<li><a href="${h.url}" target="_blank" rel="noopener">${esc(h.name)}</a></li>`).join("");
   const arr = `<svg class="ico"><use href="#i-arrow"/></svg>`;
   $("#ddList").innerHTML = all.map(h=>`<a class="dd-item" href="${h.url}" target="_blank" rel="noopener"><b>${esc(h.name)}</b><span>${esc(h.city)}, ${esc(h.addr)}</span>${arr}</a>`).join("");
@@ -700,9 +675,8 @@ $("#filters").addEventListener("click", e => { const b = e.target.closest(".chip
 document.addEventListener("click", e => {
   const m = e.target.closest(".mitem,.pin"); if(m){ S.sel = m.dataset.id; renderMap(); }
   const bk = e.target.closest("[data-book]");
-  if(bk){ e.preventDefault(); if(bk.dataset.book) $("#sHotel").value = bk.dataset.book; $("#top").scrollIntoView({behavior:"smooth"}); setTimeout(()=>$("#sHotel").focus({preventScroll:true}),500); }
+  if(bk){ e.preventDefault(); $("#tl-search-form").scrollIntoView({behavior:"smooth", block:"end"}); }
 });
-$("#search").addEventListener("submit", e => { e.preventDefault(); const b = e.target.querySelector("button"); b.textContent = "Открываем модуль бронирования…"; setTimeout(()=>b.textContent="Найти номер",1600); });
 
 const fh = $("#fh"), fb = $("#fb");
 [fh,fb].forEach(s => s.innerHTML = FONTS.map(f=>`<option>${f}</option>`).join(""));
@@ -731,7 +705,7 @@ const hdr = $("#hdr");
 new IntersectionObserver(([en]) => hdr.classList.toggle("is-solid", !en.isIntersecting), {rootMargin:"-90px 0px 0px 0px"}).observe($("#heroTitle"));
 
 // phone booking bar: hidden while the search form itself is on screen
-new IntersectionObserver(([en]) => document.querySelector(".mbar").classList.toggle("is-off", en.isIntersecting)).observe($("#search"));
+new IntersectionObserver(([en]) => document.querySelector(".mbar").classList.toggle("is-off", en.isIntersecting)).observe($("#tl-search-form"));
 
 // hero slider
 const slides = [...document.querySelectorAll("#slides img")];
@@ -759,10 +733,53 @@ go(0);
 
 // dates
 const d0 = new Date(), d1 = new Date(Date.now()+864e5), iso = d => d.toISOString().slice(0,10);
-$("#sIn").value = iso(d0); $("#sOut").value = iso(d1);
 $("#yr").textContent = d0.getFullYear();
 
 applyColors(); applyFonts(); renderHotels(); renderAbout();
+</script>
+
+<!-- TravelLine search form: same integration code as on eldviggroup.ru -->
+<script>
+    (function (w) {
+        var q = [
+            [
+                'setContext',
+                'TL-INT-CHAINEXPRESS.chain-express-1',
+                'ru'
+            ],
+            ['embed', 'search-form', {
+                providers: [["1168","Гостиница Италмас"],["53803","Гостиница \"Театральная\""]],
+        submitUrl: {"1168":"https://italmashotel.ru/booking/?date={date}\u0026nights={nights}\u0026adults={adults}\u0026currency=rub\u0026lang=ru-ru","53803":"https://teatrhotel.ru/booking/?date={date}\u0026nights={nights}\u0026adults={adults}\u0026currency=rub\u0026lang=ru-ru"},
+        container: 'tl-search-form',
+            currency:"RUB",
+        adults:  2 ,
+        nights: 1 ,
+        oncomplete: function(e) {
+            const searchFormDocument = document.getElementById('tl-search-form').querySelector('iframe').contentDocument;
+
+            const searchFormContainer = searchFormDocument.querySelector('.sfl-container');
+            searchFormContainer.style.background = "#FDF8E8"
+
+            const submitButtonContainer = searchFormDocument.querySelector('.sf-submit-button-container.sf-submit-button-input-container');
+            submitButtonContainer.style.backgroundColor = "#ADCD16"
+        }
+    }],
+    ];
+        var h=["ru-ibe.tlintegration.ru","ibe.tlintegration.ru","ibe.tlintegration.com"];
+
+        var t = w.travelline = (w.travelline || {}), ti = t.integration = (t.integration || {});
+        ti.__cq = ti.__cq ? ti.__cq.concat(q) : q;
+        if (!ti.__loader) {
+            ti.__loader = true;
+            var d=w.document,c=d.getElementsByTagName("head")[0]||d.getElementsByTagName("body")[0];
+            function e(s,f) {return function() {w.TL||(c.removeChild(s),f())}}
+            (function l(h) {
+                if (0===h.length) return; var s=d.createElement("script");
+                s.type="text/javascript";s.async=!0;s.src="https://"+h[0]+"/integration/loader.js";
+                s.onerror=s.onload=e(s,function(){l(h.slice(1,h.length))});c.appendChild(s)
+            })(h);
+        }
+    })(window);
 </script>
 </body>
 </html>
